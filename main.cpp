@@ -2,19 +2,38 @@
 #include <fstream>
 #include <cstring>
 #include <cstddef>
+#include <string>
+#include <stack>
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP, HALT};
 
 using namespace std;
+int index;
 
+union Data {
+  int i;
+  float f;
+  double d;
+  char* s;
+};
+
+struct StackBlock {
+  char typecode;
+  union Data data;
+};
 
 int main() {
+  stack<StackBlock> theStack;
+  char copyright[10] = {'(','C',')','C','H','U','N','K','U','N'};
+  int codeSegment = 0;
+  int dataSegment = 0;
+  int someIndex = 0;
   ifstream inFile;
   size_t size = 0;
 
-  inFile.open("a.txt",ios::in|ios::binary|ios::ate);
+  inFile.open("CK.chop",ios::in|ios::binary|ios::ate);
   char* oData = 0;
 
   inFile.seekg(0, ios::end);
@@ -26,17 +45,28 @@ int main() {
   inFile.read(oData, size);
   oData[size] = '\0';
   cout << "oData size: " << strlen(oData) <<  endl;
-  bool newline = false;
 
-  for(size_t i = 0; i<strlen(oData); i++) {
+  char* youAreHere;
+  youAreHere = oData;
+
+  while(someIndex<10) {
+    if(copyright[someIndex++] != *youAreHere++) {
+      cout << "FATAL ERROR: Key not present.";
+      return 1;
+    }
+  }
+  codeSegment = chartoint(&youAreHere[10]);
+  dataSegment = chartoint(&youAreHere[14]);
+  index=18;
+  while(true) {
     //reading example, plz test
-    cout << "oData["<<i<<"] " << oData[i];
+    cout << "NEXT CHAR: " << youAreHere[index];
     cout << "\n";
-    cout << oData[i] << " + 'a' = " << (oData[i] + 'a');
-    cout << ('a') << endl;
-    cout << "\n\n";
+    //cout << oData[i] << " + 'a' = " << (oData[i] + 'a');
+    //cout << ('a') << endl;
+    //cout << "\n\n";
 
-    switch(oData[i]){
+    switch(youAreHere[index]){
       case PRTCR:
       break;
       case PRTC:
@@ -118,6 +148,7 @@ int main() {
       case RDAD:
       break;
       case RDAS:
+        //is did
       break;
       case JMP:
       break;
@@ -154,13 +185,11 @@ int main() {
       case CMP:
       break;
       case HALT:
+        return 0;
       break;
       default:
         cout << "ERROR: Unrecognized Command.";
       break;
     }
   }
-  cout << "Press ENTER to exit.";
-  getchar();
-  return 0;
 }
