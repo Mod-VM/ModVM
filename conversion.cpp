@@ -1,4 +1,5 @@
 #include "conversion.h"
+#include <cstdlib>
 int chartoint (char* c) {
   int x = 0;
   for(int i = 0; i < 4; i++) {
@@ -9,7 +10,7 @@ int chartoint (char* c) {
 }
 
 char* inttochar (int x) {
-  char* c = malloc(4);
+  char* c = (char*)malloc(4);
   for(int i = 3; i>= 0; i--) {
     c[i] = (char)x;
     x = x >> 8;
@@ -37,11 +38,16 @@ double chartodouble (char* c) {
   return *(double*)&x;
 }
 
-char* doubletochar (double d) {
-  char* c = malloc(8);
+char* longtochar(long l) {
+  char* c = (char*)malloc(8);
   for(int i=7; i>=0; i--) {
-    c[i] = (char)d;
-    d = d >> 8;
+    c[i] = (char)l;
+    l = l >> 8;
   }
   return c;
+}
+
+char* doubletochar (double d) {
+  long l = *(long*)&d;
+  return longtochar(l);
 }
