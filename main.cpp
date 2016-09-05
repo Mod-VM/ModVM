@@ -70,7 +70,8 @@ int main() {
   char* tempPointer;
 
   while(true) {
-    tempBlock = {};
+    StackBlock reset = {};
+    tempBlock = reset;
     //reading example, plz test
     cout << "NEXT CHAR: " << youAreHere[index];
     cout << "\n";
@@ -243,7 +244,7 @@ int main() {
               tempBlock = theStack.top();
               theStack.pop();
               if(theStack.top().typecode == 'i') {
-                theStack.data.i += tempBlock.data.i;
+                theStack.top().data.i += tempBlock.data.i;
                 theStack.pop();
               }
               theStack.push(tempBlock);
@@ -274,7 +275,7 @@ int main() {
         }
       break;
       case MUL:
-        if(theStack.size >= 2) {
+        if(theStack.size() >= 2) {
           if (theStack.top().typecode == 'i') {
             tempBlock.typecode = 'i';
             tempBlock.data.i = theStack.top().data.i;
@@ -288,7 +289,7 @@ int main() {
         }
       break;
       case DIV:
-        if(theStack.size >= 2) {
+        if(theStack.size() >= 2) {
           if (theStack.top().typecode == 'i') {
             tempBlock.typecode = 'i';
             tempBlock.data.i = theStack.top().data.i;
@@ -317,6 +318,8 @@ int main() {
       case CMP:
       break;
       case HALT:
+        cout << "Press ENTER to exit" << endl;
+        getchar();
         return 0;
       break;
       default:
