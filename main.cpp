@@ -7,7 +7,7 @@
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
-enum COMMANDS {PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP, HALT};
+enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
 
 using namespace std;
 int index;
@@ -66,12 +66,18 @@ int main() {
     //cout << ('a') << endl;
     //cout << "\n\n";
 
-    switch(youAreHere[index]){
+    switch(youAreHere[index++]){
       case PRTCR:
+        cout << "\n";
       break;
       case PRTC:
       break;
       case PRTI:
+        //Marin
+        int tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        //variableArray doesn't exist yet, subject to change names
+        cout << chartoint(&variableArray[tempAddress]);
       break;
       case PRTF:
       break;
@@ -80,6 +86,14 @@ int main() {
       case PUSHC:
       break;
       case PUSHI:
+        //Marin
+        int tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        //variableArray doesn't exist yet, subject to change names
+        StackBlock newBlock;
+        newBlock.typecode = 'i';
+        newBlock.data.i = chartoint(&variableArray[tempAddress]);
+        theStack.push(newBlock);
       break;
       case PUSHF:
       break;
@@ -100,6 +114,12 @@ int main() {
       case PUSHKC:
       break;
       case PUSHKI:
+        //Marin
+        StackBlock newBlock;
+        newBlock.typecode = 'i';
+        newBlock.data.i = chartoint(&youAreHere[index]);
+        index += 4;
+        theStack.push(newBlock);
       break;
       case PUSHKF:
       break;
@@ -110,6 +130,16 @@ int main() {
       case POPC:
       break;
       case POPI:
+        if(!theStack.empty()) {
+             int dir = chartodir(youAreHere[index]);
+             index = index + 2;
+             StackBlock tmp = theStack.top();
+             if(tmp.typecode = 'i') {
+                 theStack.pop();
+                 int toPush = tmp.data.i;
+                 varTable[dir] = inttochar(toPush);
+             }
+         }
       break;
       case POPF:
       break;
@@ -132,6 +162,14 @@ int main() {
       case RDC:
       break;
       case RDI:
+        //Marin
+        int tempAddress = chartodir(&youAreHere[index]);
+        index+=2;
+        int tempInteger;
+        cin >> tempInteger;
+        //variableArray doesn't exist yet, subject to change names
+        variableArray[tempAddress] = inttochar(tempInteger);
+        //THIS IS WRONG, MISSING THE METHOD TO ADD CONTENT TO VARIABLEARRAY
       break;
       case RDF:
       break;
@@ -173,14 +211,84 @@ int main() {
       case DEC:
       break;
       case ADD:
+        StackBlock temp;
+        if(theStack.size() < 2)
+            return 1;
+        else {
+            if(theStack.top().typecode == 'i') {
+              temp = theStack.pop();
+              if(theStack.top().typecode == 'i') {
+                temp.data.i += theStack.pop().data.i;
+                theStack.push(temp);
+              }
+            }
+            else {
+              cout << "ERROR";
+              return 1;
+            }
+          }
       break;
       case SUB:
+        if(theStack.size() > 1) {
+              StackBlock tmp = theStack.top();
+              int minuend;
+              int subtrahend;
+              if(tmp.typecode == 'i') {
+                  theStack.pop();
+                  subtrahend = temp.data.i;
+                  tmp = theStack.top();
+                  if(tmp.typecode == 'i') {
+                      theStack.pop();
+                      minuend = tmp.data.i;
+                      int difference = minuend - subtrahend;
+                      tmp.data.i = difference;
+                      theStack.push(tmp);
+                  }
+              }
+          }
       break;
       case MUL:
+        if(theStack.size >= 2) {
+          StackBlock res = {};
+          if (theStack.top().typecode == 'i') {
+            res.typecode = 'i';
+            res.data.i = theStack.top().data.i;
+            theStack.pop();
+          }
+          if (theStack.top().typecode == 'i') {
+            res.data.i *= theStack.top().data.i;
+            theStack.pop();
+          }
+          theStack.push(res);
+        }
       break;
       case DIV:
+        if(theStack.size >= 2) {
+          StackBlock res = {};
+          if (theStack.top().typecode == 'i') {
+            res.typecode = 'i';
+            res.data.i = theStack.top().data.i;
+            theStack.pop();
+          }
+          if (theStack.top().typecode == 'i') {
+            res.data.i = theStack.top().data.i / res.data.i;
+            theStack.pop();
+          }
+          theStack.push(res);
+        }
       break;
       case MOD:
+        // n%m
+        if(theStack.size() >= 2) {
+          StackBlock m = theStack.top();
+          theStack.pop();
+          if(m.typecode == 'i') {
+            if(theStack.top().typecode == 'i')
+              theStack.top().data.i = (theStack.top().data.i % m.data.i);
+          }
+        }
+        else
+          return 0;
       break;
       case CMP:
       break;
