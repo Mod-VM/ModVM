@@ -8,5 +8,6 @@ char* floattochar (float f);
 double chartodouble (char* c);
 char* longtochar (long l);
 char* doubletochar (double d);
-
+int chartodir (char* c);
+char* dirtochar (int x);
 #endif
