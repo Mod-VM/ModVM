@@ -7,7 +7,7 @@
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
-enum COMMANDS {PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP, HALT};
+enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
 
 using namespace std;
 int index;
@@ -66,8 +66,9 @@ int main() {
     //cout << ('a') << endl;
     //cout << "\n\n";
 
-    switch(youAreHere[index]){
+    switch(youAreHere[index++]){
       case PRTCR:
+        cout << "\n";
       break;
       case PRTC:
       break;
@@ -177,8 +178,34 @@ int main() {
       case SUB:
       break;
       case MUL:
+        if(theStack.size >= 2) {
+          StackBlock res = {};
+          if (theStack.top().typecode == 'i') {
+            res.typecode = 'i';
+            res.data.i = theStack.top().data.i;
+            theStack.pop();
+          }
+          if (theStack.top().typecode == 'i') {
+            res.data.i *= theStack.top().data.i;
+            theStack.pop();
+          }
+          theStack.push(res);
+        }
       break;
       case DIV:
+        if(theStack.size >= 2) {
+          StackBlock res = {};
+          if (theStack.top().typecode == 'i') {
+            res.typecode = 'i';
+            res.data.i = theStack.top().data.i;
+            theStack.pop();
+          }
+          if (theStack.top().typecode == 'i') {
+            res.data.i = theStack.top().data.i / res.data.i;
+            theStack.pop();
+          }
+          theStack.push(res);
+        }
       break;
       case MOD:
       break;

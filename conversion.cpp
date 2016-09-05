@@ -38,7 +38,7 @@ double chartodouble (char* c) {
   return *(double*)&x;
 }
 
-char* longtochar(long l) {
+char* longtochar (long l) {
   char* c = (char*)malloc(8);
   for(int i=7; i>=0; i--) {
     c[i] = (char)l;
