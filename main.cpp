@@ -62,7 +62,15 @@ int main() {
   memoryMapper = new char[dataSegment];
 
   index=18;
+
+  //VARIABLES FOR FUNCTIONS
+  int tempAddress;
+  StackBlock tempBlock = {};
+  int tempInteger;
+  char* tempPointer;
+
   while(true) {
+    tempBlock = {};
     //reading example, plz test
     cout << "NEXT CHAR: " << youAreHere[index];
     cout << "\n";
@@ -78,9 +86,8 @@ int main() {
       break;
       case PRTI:
         //Marin
-        int tempAddress = chartodir(&youAreHere[index]);
+        tempAddress = chartodir(&youAreHere[index]);
         index += 2;
-        //variableArray doesn't exist yet, subject to change names
         cout << chartoint(&memoryMapper[tempAddress]);
       break;
       case PRTF:
@@ -91,13 +98,11 @@ int main() {
       break;
       case PUSHI:
         //Marin
-        int tempAddress = chartodir(&youAreHere[index]);
+        tempAddress = chartodir(&youAreHere[index]);
         index += 2;
-        //variableArray doesn't exist yet, subject to change names
-        StackBlock newBlock;
-        newBlock.typecode = 'i';
-        newBlock.data.i = chartoint(&memoryMapper[tempAddress]);
-        theStack.push(newBlock);
+        tempBlock.typecode = 'i';
+        tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
+        theStack.push(tempBlock);
       break;
       case PUSHF:
       break;
@@ -119,11 +124,10 @@ int main() {
       break;
       case PUSHKI:
         //Marin
-        StackBlock newBlock;
-        newBlock.typecode = 'i';
-        newBlock.data.i = chartoint(&youAreHere[index]);
+        tempBlock.typecode = 'i';
+        tempBlock.data.i = chartoint(&youAreHere[index]);
         index += 4;
-        theStack.push(newBlock);
+        theStack.push(tempBlock);
       break;
       case PUSHKF:
       break;
@@ -135,15 +139,15 @@ int main() {
       break;
       case POPI:
         if(!theStack.empty()) {
-             int dir = chartodir(&youAreHere[index]);
+             tempAddress = chartodir(&youAreHere[index]);
              index = index + 2;
-             StackBlock tmp = theStack.top();
-             if(tmp.typecode = 'i') {
+             tempBlock = theStack.top();
+             if(tempBlock.typecode = 'i') {
                  theStack.pop();
-                 int toPush = tmp.data.i;
-                 char* tempPtr = inttochar(toPush);
+                 tempInteger = tempBlock.data.i;
+                 tempPointer = inttochar(tempInteger);
                  for(someIndex = 0; someIndex < 4; someIndex++) {
-                   memoryMapper[dir++] = tempPtr[someIndex];
+                   memoryMapper[tempAddress++] = tempPointer[someIndex];
                  }
              }
          }
@@ -170,11 +174,10 @@ int main() {
       break;
       case RDI:
         //Marin
-        int tempAddress = chartodir(&youAreHere[index]);
+        tempAddress = chartodir(&youAreHere[index]);
         index+=2;
-        int tempInteger;
         cin >> tempInteger;
-        char* tempPointer = inttochar(tempInteger);
+        tempPointer = inttochar(tempInteger);
         for(someIndex = 0; someIndex < 4; someIndex++){
           memoryMapper[tempAddress++] = tempPointer[someIndex];
         }
@@ -215,34 +218,35 @@ int main() {
       case STKX:
       break;
       case INC:
-        int tempAddress = chartodir(&youAreHere[index]);
+        tempAddress = chartodir(&youAreHere[index]);
         index += 2;
-        int x = chartoint(&memoryMapper[tempAddress]);
-        x++;
-        char* tempPointer = inttochar(x);
+        tempInteger = chartoint(&memoryMapper[tempAddress]);
+        tempInteger++;
+        tempPointer = inttochar(tempInteger);
         for(someIndex = 0; someIndex < 4; someIndex++)
           memoryMapper[tempAddress++] = tempPointer[someIndex];
       break;
       case DEC:
-        int tempAddress = chartodir(&youAreHere[index]);
+        tempAddress = chartodir(&youAreHere[index]);
         index += 2;
-        int x = chartoint(&memoryMapper[tempAddress]);
-        x--;
-        char* tempPointer = inttochar(x);
+        tempInteger = chartoint(&memoryMapper[tempAddress]);
+        tempInteger--;
+        tempPointer = inttochar(tempInteger);
         for(someIndex = 0; someIndex < 4; someIndex++)
           memoryMapper[tempAddress++] = tempPointer[someIndex];
       break;
       case ADD:
-        StackBlock temp;
         if(theStack.size() < 2)
             return 1;
         else {
             if(theStack.top().typecode == 'i') {
-              temp = theStack.pop();
+              tempBlock = theStack.top();
+              theStack.pop();
               if(theStack.top().typecode == 'i') {
-                temp.data.i += theStack.pop().data.i;
-                theStack.push(temp);
+                theStack.data.i += tempBlock.data.i;
+                theStack.pop();
               }
+              theStack.push(tempBlock);
             }
             else {
               cout << "ERROR";
@@ -251,62 +255,60 @@ int main() {
           }
       break;
       case SUB:
-        if(theStack.size() > 1) {
-              StackBlock tmp = theStack.top();
-              int minuend;
-              int subtrahend;
-              if(tmp.typecode == 'i') {
-                  theStack.pop();
-                  subtrahend = temp.data.i;
-                  tmp = theStack.top();
-                  if(tmp.typecode == 'i') {
-                      theStack.pop();
-                      minuend = tmp.data.i;
-                      int difference = minuend - subtrahend;
-                      tmp.data.i = difference;
-                      theStack.push(tmp);
-                  }
-              }
+      if(theStack.size() < 2)
+          return 1;
+      else {
+          if(theStack.top().typecode == 'i') {
+            tempBlock = theStack.top();
+            theStack.pop();
+            if(theStack.top().typecode == 'i') {
+              tempBlock.data.i = theStack.top().data.i - tempBlock.data.i;
+              theStack.pop();
+            }
+            theStack.push(tempBlock);
           }
+          else {
+            cout << "ERROR";
+            return 1;
+          }
+        }
       break;
       case MUL:
         if(theStack.size >= 2) {
-          StackBlock res = {};
           if (theStack.top().typecode == 'i') {
-            res.typecode = 'i';
-            res.data.i = theStack.top().data.i;
+            tempBlock.typecode = 'i';
+            tempBlock.data.i = theStack.top().data.i;
             theStack.pop();
           }
           if (theStack.top().typecode == 'i') {
-            res.data.i *= theStack.top().data.i;
+            tempBlock.data.i *= theStack.top().data.i;
             theStack.pop();
           }
-          theStack.push(res);
+          theStack.push(tempBlock);
         }
       break;
       case DIV:
         if(theStack.size >= 2) {
-          StackBlock res = {};
           if (theStack.top().typecode == 'i') {
-            res.typecode = 'i';
-            res.data.i = theStack.top().data.i;
+            tempBlock.typecode = 'i';
+            tempBlock.data.i = theStack.top().data.i;
             theStack.pop();
           }
           if (theStack.top().typecode == 'i') {
-            res.data.i = theStack.top().data.i / res.data.i;
+            tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
             theStack.pop();
           }
-          theStack.push(res);
+          theStack.push(tempBlock);
         }
       break;
       case MOD:
         // n%m
         if(theStack.size() >= 2) {
-          StackBlock m = theStack.top();
+          tempBlock = theStack.top();
           theStack.pop();
-          if(m.typecode == 'i') {
+          if(tempBlock.typecode == 'i') {
             if(theStack.top().typecode == 'i')
-              theStack.top().data.i = (theStack.top().data.i % m.data.i);
+              theStack.top().data.i = (theStack.top().data.i % tempBlock.data.i);
           }
         }
         else
