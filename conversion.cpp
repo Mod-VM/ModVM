@@ -51,3 +51,21 @@ char* doubletochar (double d) {
   long l = *(long*)&d;
   return longtochar(l);
 }
+
+int chartodir (char* c) {
+  int x = 0;
+  for(int i = 0; i < 2; i++) {
+    x <<= 8;
+    x += c[i];
+  }
+  return x;
+}
+
+char* inttochar (int x) {
+  char* c = (char*)malloc(2);
+  for(int i = 1; i>= 0; i--) {
+    c[i] = (char)x;
+    x = x >> 8;
+  }
+  return c;
+}

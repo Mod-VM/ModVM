@@ -7,5 +7,7 @@ float chartofloat (char* c);
 char* floattochar (float f);
 double chartodouble (char* c);
 char* doubletochar (double d);
+int chartodir (char* c);
+char* dirtochar (int x);
 
 #endif

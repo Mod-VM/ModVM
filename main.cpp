@@ -23,7 +23,8 @@ struct StackBlock {
   char typecode;
   union Data data;
 };
-
+//
+//
 int main() {
   stack<StackBlock> theStack;
   char copyright[10] = {'(','C',')','C','H','U','N','K','U','N'};
@@ -68,6 +69,8 @@ int main() {
 
     switch(youAreHere[index]){
       case PRTCR:
+        cout << endl;
+        index++;
       break;
       case PRTC:
       break;
@@ -110,6 +113,18 @@ int main() {
       case POPC:
       break;
       case POPI:
+          if(!theStack.empty())
+          {
+              int dir = chartodir(youAreHere[index]);
+              index = index + 2;
+              StackBlock tmp = theStack.top();
+              if(tmp.typecode = 'i')
+              {
+                  theStack.pop();
+                  int toPush = tmp.data.i;
+                  varTable[dir] = inttochar(toPush);
+              }
+          }
       break;
       case POPF:
       break;
@@ -175,6 +190,26 @@ int main() {
       case ADD:
       break;
       case SUB:
+          if(theStack.size() > 1)
+          {
+              StackBlock tmp = theStack.top();
+              int minuend;
+              int subtrahend;
+              if(tmp.typecode == 'i')
+              {
+                  theStack.pop();
+                  minuend = tmp.data.i;
+                  tmp = theStack.top();
+                  if(tmp.typecode == 'i')
+                  {
+                      theStack.pop();
+                      subtrahend = tmp.data.i;
+                      int difference = minuend - subtrahend;
+                      tmp.data.i = difference;
+                      theStack.push(tmp);
+                  }
+              }
+          }
       break;
       case MUL:
       break;
