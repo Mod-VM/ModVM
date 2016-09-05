@@ -61,7 +61,7 @@ int chartodir (char* c) {
   return x;
 }
 
-char* inttochar (int x) {
+char* dirtochar (int x) {
   char* c = (char*)malloc(2);
   for(int i = 1; i>= 0; i--) {
     c[i] = (char)x;
