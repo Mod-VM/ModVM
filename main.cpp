@@ -11,6 +11,7 @@ enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PUSHC, PUSHI, PUSHF, PUSHD, 
 
 using namespace std;
 int index;
+char* memoryMapper;
 
 union Data {
   int i;
@@ -26,6 +27,7 @@ struct StackBlock {
 
 int main() {
   stack<StackBlock> theStack;
+
   char copyright[10] = {'(','C',')','C','H','U','N','K','U','N'};
   int codeSegment = 0;
   int dataSegment = 0;
@@ -57,6 +59,8 @@ int main() {
   }
   codeSegment = chartoint(&youAreHere[10]);
   dataSegment = chartoint(&youAreHere[14]);
+  memoryMapper = new char[dataSegment];
+
   index=18;
   while(true) {
     //reading example, plz test
@@ -77,7 +81,7 @@ int main() {
         int tempAddress = chartodir(&youAreHere[index]);
         index += 2;
         //variableArray doesn't exist yet, subject to change names
-        cout << chartoint(&variableArray[tempAddress]);
+        cout << chartoint(&memoryMapper[tempAddress]);
       break;
       case PRTF:
       break;
@@ -92,7 +96,7 @@ int main() {
         //variableArray doesn't exist yet, subject to change names
         StackBlock newBlock;
         newBlock.typecode = 'i';
-        newBlock.data.i = chartoint(&variableArray[tempAddress]);
+        newBlock.data.i = chartoint(&memoryMapper[tempAddress]);
         theStack.push(newBlock);
       break;
       case PUSHF:
@@ -131,13 +135,16 @@ int main() {
       break;
       case POPI:
         if(!theStack.empty()) {
-             int dir = chartodir(youAreHere[index]);
+             int dir = chartodir(&youAreHere[index]);
              index = index + 2;
              StackBlock tmp = theStack.top();
              if(tmp.typecode = 'i') {
                  theStack.pop();
                  int toPush = tmp.data.i;
-                 varTable[dir] = inttochar(toPush);
+                 char* tempPtr = inttochar(toPush);
+                 for(someIndex = 0; someIndex < 4; someIndex++) {
+                   memoryMapper[dir++] = tempPtr[someIndex];
+                 }
              }
          }
       break;
@@ -167,9 +174,10 @@ int main() {
         index+=2;
         int tempInteger;
         cin >> tempInteger;
-        //variableArray doesn't exist yet, subject to change names
-        variableArray[tempAddress] = inttochar(tempInteger);
-        //THIS IS WRONG, MISSING THE METHOD TO ADD CONTENT TO VARIABLEARRAY
+        char* tempPointer = inttochar(tempInteger);
+        for(someIndex = 0; someIndex < 4; someIndex++){
+          memoryMapper[tempAddress++] = tempPointer[someIndex];
+        }
       break;
       case RDF:
       break;
@@ -207,8 +215,22 @@ int main() {
       case STKX:
       break;
       case INC:
+        int tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        int x = chartoint(&memoryMapper[tempAddress]);
+        x++;
+        char* tempPointer = inttochar(x);
+        for(someIndex = 0; someIndex < 4; someIndex++)
+          memoryMapper[tempAddress++] = tempPointer[someIndex];
       break;
       case DEC:
+        int tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        int x = chartoint(&memoryMapper[tempAddress]);
+        x--;
+        char* tempPointer = inttochar(x);
+        for(someIndex = 0; someIndex < 4; someIndex++)
+          memoryMapper[tempAddress++] = tempPointer[someIndex];
       break;
       case ADD:
         StackBlock temp;
