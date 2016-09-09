@@ -68,6 +68,7 @@ int main() {
   StackBlock tempBlock = {};
   int tempInteger;
   char* tempPointer;
+  string tempString;
 
   while(true) {
     StackBlock reset = {};
@@ -147,6 +148,13 @@ int main() {
       case PUSHKD:
       break;
       case PUSHKS:
+        tempInteger = youAreHere[index];
+        char* tempPointer = malloc(tempInteger+1);
+        strncpy(tempPointer,&youAreHere[index],tempInteger);
+        index += tempInteger;
+        tempBlock.typecode = 's';
+        tempBlock.data.s = tempPointer;
+        theStack.push(tempBlock);
       break;
       case POPC:
       break;
@@ -200,6 +208,13 @@ int main() {
       case RDD:
       break;
       case RDS:
+        tempAddress = chartodir(&youAreHere[index]);
+        index+=2;
+        getline(cin,tempString);
+        for(someIndex = 0; someIndex<tempString.length(); someIndex++){
+          memoryMapper[tempAddress++] = tempString[someIndex];
+        }
+        memoryMapper[tempAddress] = '\0';
       break;
       case RDAC:
       break;
