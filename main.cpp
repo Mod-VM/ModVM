@@ -4,6 +4,7 @@
 #include <cstddef>
 #include <string>
 #include <stack>
+#include <cstdlib>
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
@@ -80,6 +81,7 @@ int main() {
     //cout << ('a') << endl;
     //cout << "\n\n";
 
+
     switch(youAreHere[index++]){
       case PRTCR:
         cout << "\n";
@@ -97,6 +99,11 @@ int main() {
       case PRTD:
       break;
       case PRTS:
+        tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        while(&memoryMapper[tempAddress] != '\0')
+          cout << memoryMapper[tempAddress++];
+        break;
       break;
       case PRTAC:
       break;
@@ -123,6 +130,17 @@ int main() {
       case PUSHD:
       break;
       case PUSHS:
+        tempAddress = chartodir(&youAreHere[index]);
+        index += 2;
+        tempInteger = 0;
+        while(&memoryMapper[tempAddress++] != '\0')
+          tempInteger++;
+        break;
+        strncpy(tempPointer, &memoryMapper[tempAddress], ++tempInteger)
+        tempBlock.typecode = 's';
+        //not really sure tho, pointer will be re-assigned
+        tempBlock.data.s = tempPointer;
+        theStack.push(tempBlock);
       break;
       case PUSHAC:
       break;
@@ -149,7 +167,7 @@ int main() {
       break;
       case PUSHKS:
         tempInteger = youAreHere[index];
-        char* tempPointer = malloc(tempInteger+1);
+        tempPointer = (char*)malloc(tempInteger+1);
         strncpy(tempPointer,&youAreHere[index],tempInteger);
         index += tempInteger;
         tempBlock.typecode = 's';
