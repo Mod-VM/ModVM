@@ -53,16 +53,17 @@ int main() {
   youAreHere = oData;
 
   while(someIndex<10) {
-    if(copyright[someIndex++] != *youAreHere++) {
+    if(copyright[someIndex] != youAreHere[someIndex]) {
       cout << "FATAL ERROR: Key not present.";
       return 1;
     }
+    someIndex++;
   }
-  codeSegment = chartoint(&youAreHere[10]);
-  dataSegment = chartoint(&youAreHere[14]);
+  codeSegment = chartodir(&youAreHere[10]);
+  dataSegment = chartodir(&youAreHere[12]);
   memoryMapper = new char[dataSegment];
 
-  INDEX=18;
+  INDEX=14;
 
   //VARIABLES FOR FUNCTIONS
   int tempAddress;
