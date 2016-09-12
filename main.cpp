@@ -11,7 +11,7 @@ enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
 
 using namespace std;
-int INDEX;
+int evindex;
 char* memoryMapper;
 
 union Data {
@@ -63,7 +63,7 @@ int main() {
   dataSegment = chartodir(&youAreHere[12]);
   memoryMapper = new char[dataSegment];
 
-  INDEX=14;
+  evindex=14;
 
   //VARIABLES FOR FUNCTIONS
   int tempAddress;
@@ -76,13 +76,13 @@ int main() {
     StackBlock reset = {};
     tempBlock = reset;
     //reading example, plz test
-    printf("NEXT BYTE hex: %x, dec: %d\n", youAreHere[INDEX], youAreHere[INDEX]);
+    printf("NEXT BYTE hex: %x, dec: %d\n", youAreHere[evindex], youAreHere[evindex]);
     //cout << oData[i] << " + 'a' = " << (oData[i] + 'a');
     //cout << ('a') << endl;
     //cout << "\n\n";
 
 
-    switch(youAreHere[INDEX++]){
+    switch(youAreHere[evindex++]){
       case PRTCR:
         cout << "\n";
       break;
@@ -90,8 +90,8 @@ int main() {
       break;
       case PRTI:
         //Marin
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         cout << chartoint(&memoryMapper[tempAddress]);
       break;
       case PRTF:
@@ -99,8 +99,8 @@ int main() {
       case PRTD:
       break;
       case PRTS:
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         while(&memoryMapper[tempAddress] != '\0')
           cout << memoryMapper[tempAddress++];
         break;
@@ -119,8 +119,8 @@ int main() {
       break;
       case PUSHI:
         //Marin
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         tempBlock.typecode = 'i';
         tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
         theStack.push(tempBlock);
@@ -130,8 +130,8 @@ int main() {
       case PUSHD:
       break;
       case PUSHS:
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         tempInteger = 0;
         while(&memoryMapper[tempAddress++] != '\0')
           tempInteger++;
@@ -157,8 +157,8 @@ int main() {
       case PUSHKI:
         //Marin
         tempBlock.typecode = 'i';
-        tempBlock.data.i = chartoint(&youAreHere[INDEX]);
-        INDEX += 4;
+        tempBlock.data.i = chartoint(&youAreHere[evindex]);
+        evindex += 4;
         theStack.push(tempBlock);
       break;
       case PUSHKF:
@@ -166,10 +166,10 @@ int main() {
       case PUSHKD:
       break;
       case PUSHKS:
-        tempInteger = youAreHere[INDEX];
+        tempInteger = youAreHere[evindex];
         tempPointer = (char*)malloc(tempInteger+1);
-        strncpy(tempPointer,&youAreHere[INDEX],tempInteger);
-        INDEX += tempInteger;
+        strncpy(tempPointer,&youAreHere[evindex],tempInteger);
+        evindex += tempInteger;
         tempBlock.typecode = 's';
         tempBlock.data.s = tempPointer;
         theStack.push(tempBlock);
@@ -178,8 +178,8 @@ int main() {
       break;
       case POPI:
         if(!theStack.empty()) {
-             tempAddress = chartodir(&youAreHere[INDEX]);
-             INDEX = INDEX + 2;
+             tempAddress = chartodir(&youAreHere[evindex]);
+             evindex = evindex + 2;
              tempBlock = theStack.top();
              if(tempBlock.typecode = 'i') {
                  theStack.pop();
@@ -213,8 +213,8 @@ int main() {
       break;
       case RDI:
         //Marin
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX+=2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex+=2;
         cin >> tempInteger;
         tempPointer = inttochar(tempInteger);
         for(someIndex = 0; someIndex < 4; someIndex++){
@@ -226,8 +226,8 @@ int main() {
       case RDD:
       break;
       case RDS:
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX+=2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex+=2;
         getline(cin,tempString);
         for(someIndex = 0; someIndex<tempString.length(); someIndex++){
           memoryMapper[tempAddress++] = tempString[someIndex];
@@ -264,8 +264,8 @@ int main() {
       case STKX:
       break;
       case INC:
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         tempInteger = chartoint(&memoryMapper[tempAddress]);
         tempInteger++;
         tempPointer = inttochar(tempInteger);
@@ -273,8 +273,8 @@ int main() {
           memoryMapper[tempAddress++] = tempPointer[someIndex];
       break;
       case DEC:
-        tempAddress = chartodir(&youAreHere[INDEX]);
-        INDEX += 2;
+        tempAddress = chartodir(&youAreHere[evindex]);
+        evindex += 2;
         tempInteger = chartoint(&memoryMapper[tempAddress]);
         tempInteger--;
         tempPointer = inttochar(tempInteger);
