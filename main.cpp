@@ -36,6 +36,7 @@ int main() {
   ifstream inFile;
   size_t size = 0;
 
+
   inFile.open("CK.chop",ios::in|ios::binary|ios::ate);
   char* oData = 0;
 
@@ -53,17 +54,22 @@ int main() {
   youAreHere = oData;
 
   while(someIndex<10) {
-    if(copyright[someIndex] != youAreHere[someIndex]) {
+    if(copyright[someIndex++] != *youAreHere++) {
       cout << "FATAL ERROR: Key not present.";
+      getchar();
       return 1;
     }
-    someIndex++;
+
   }
-  codeSegment = chartodir(&youAreHere[10]);
-  dataSegment = chartodir(&youAreHere[12]);
+  codeSegment = chartodir(youAreHere);
+  cout << "CS " << codeSegment << endl;
+  youAreHere = youAreHere + 2;
+  dataSegment = chartodir(youAreHere);
+  cout << "CD " << dataSegment << endl;
+  youAreHere = youAreHere + 2;
   memoryMapper = new char[dataSegment];
 
-  evindex=14;
+  evindex=0;
 
   //VARIABLES FOR FUNCTIONS
   int tempAddress;
@@ -76,7 +82,7 @@ int main() {
     StackBlock reset = {};
     tempBlock = reset;
     //reading example, plz test
-    printf("NEXT BYTE hex: %x, dec: %d\n", youAreHere[evindex], youAreHere[evindex]);
+    printf("\nNEXT BYTE hex: %x, dec: %d\n", youAreHere[evindex], youAreHere[evindex]);
     //cout << oData[i] << " + 'a' = " << (oData[i] + 'a');
     //cout << ('a') << endl;
     //cout << "\n\n";
@@ -103,7 +109,6 @@ int main() {
         evindex += 2;
         while(&memoryMapper[tempAddress] != '\0')
           cout << memoryMapper[tempAddress++];
-        break;
       break;
       case PRTAC:
       break;
@@ -156,6 +161,7 @@ int main() {
       break;
       case PUSHKI:
         //Marin
+        cout << "PUSHKI " << endl;
         tempBlock.typecode = 'i';
         tempBlock.data.i = chartoint(&youAreHere[evindex]);
         evindex += 4;
@@ -177,6 +183,7 @@ int main() {
       case POPC:
       break;
       case POPI:
+        cout << "POPI " << endl;
         if(!theStack.empty()) {
              tempAddress = chartodir(&youAreHere[evindex]);
              evindex = evindex + 2;
@@ -290,9 +297,7 @@ int main() {
               theStack.pop();
               if(theStack.top().typecode == 'i') {
                 theStack.top().data.i += tempBlock.data.i;
-                theStack.pop();
               }
-              theStack.push(tempBlock);
             }
             else {
               cout << "ERROR";
@@ -325,10 +330,10 @@ int main() {
             tempBlock.typecode = 'i';
             tempBlock.data.i = theStack.top().data.i;
             theStack.pop();
-          }
-          if (theStack.top().typecode == 'i') {
-            tempBlock.data.i *= theStack.top().data.i;
-            theStack.pop();
+            if (theStack.top().typecode == 'i') {
+              tempBlock.data.i *= theStack.top().data.i;
+              theStack.pop();
+            }
           }
           theStack.push(tempBlock);
         }
@@ -339,11 +344,13 @@ int main() {
             tempBlock.typecode = 'i';
             tempBlock.data.i = theStack.top().data.i;
             theStack.pop();
+            if (theStack.top().typecode == 'i') {
+              cout << theStack.top().data.i << " / " << tempBlock.data.i;
+              tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
+              theStack.pop();
+            }
           }
-          if (theStack.top().typecode == 'i') {
-            tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
-            theStack.pop();
-          }
+
           theStack.push(tempBlock);
         }
       break;
@@ -364,7 +371,8 @@ int main() {
       break;
       case HALT:
         cout << "Press ENTER to exit" << endl;
-        getchar();
+        char ocdontsteal;
+        cin >> ocdontsteal;
         return 0;
       break;
       default:
