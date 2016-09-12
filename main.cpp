@@ -134,19 +134,17 @@ int main() {
       break;
       case PUSHD:
       break;
-      case PUSHS:
+      case PUSHS: {
         tempAddress = chartodir(&youAreHere[evindex]);
         evindex += 2;
-        tempInteger = 0;
-        while(&memoryMapper[tempAddress++] != '\0')
-          tempInteger++;
-        break;
-        strncpy(tempPointer, &memoryMapper[tempAddress], ++tempInteger);
+        int length = strlen(&memoryMapper[tempAddress]);
+        tempPointer = (char *) malloc(length + 1);
+        strcpy(tempPointer, &memoryMapper[tempAddress]);
         tempBlock.typecode = 's';
-        //not really sure tho, pointer will be re-assigned
         tempBlock.data.s = tempPointer;
         theStack.push(tempBlock);
-      break;
+        break;
+      }
       case PUSHAC:
       break;
       case PUSHAI:
