@@ -13,6 +13,28 @@ void copyrightCheck();
 void prtiFunc();
 void prtsFunc();
 void popsFunc();
+void cmpFunc();
+bool modFunc();
+bool divFunc();
+bool mulFunc();
+bool subFunc();
+bool addFunc();
+void decFunc();
+void incFunc();
+void jmpFunc();
+void jmpeqFunc();
+void jmpneFunc();
+void jmpgeFunc();
+void jmpgtFunc();
+void jmpltFunc();
+void jmpleFunc();
+void rdsFunc();
+void rdiFunc();
+void popiFunc();
+void pushksFunc();
+void pushkiFunc();
+void pushsFunc();
+void pushiFunc();
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
@@ -75,18 +97,13 @@ int main() {
         break;
         case PRTC:
         break;
-        case PRTI:
-          //Marin
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex += 2;
-          cout << chartoint(&memoryMapper[tempAddress]);
+        case PRTI: prtiFunc();
         break;
         case PRTF:
         break;
         case PRTD:
         break;
-        case PRTS:
-          prtsFunc();
+        case PRTS: prtsFunc();
         break;
         case PRTAC:
         break;
@@ -100,29 +117,14 @@ int main() {
         break;
         case PUSHC:
         break;
-        case PUSHI:
-          //Marin
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex += 2;
-          tempBlock.typecode = 'i';
-          tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
-          theStack.push(tempBlock);
+        case PUSHI: pushiFunc();
         break;
         case PUSHF:
         break;
         case PUSHD:
         break;
-        case PUSHS: {
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex += 2;
-          int length = strlen(&memoryMapper[tempAddress]);
-          tempPointer = (char *) malloc(length + 1);
-          strcpy(tempPointer, &memoryMapper[tempAddress]);
-          tempBlock.typecode = 's';
-          tempBlock.data.s = tempPointer;
-          theStack.push(tempBlock);
+        case PUSHS: pushsFunc();
           break;
-        }
         case PUSHAC:
         break;
         case PUSHAI:
@@ -135,51 +137,23 @@ int main() {
         break;
         case PUSHKC:
         break;
-        case PUSHKI:
-          //Marin
-          cout << "PUSHKI " << endl;
-          tempBlock.typecode = 'i';
-          tempBlock.data.i = chartoint(&youAreHere[evindex]);
-          evindex += 4;
-          theStack.push(tempBlock);
+        case PUSHKI: pushkiFunc();
         break;
         case PUSHKF:
         break;
         case PUSHKD:
         break;
-        case PUSHKS:
-          tempInteger = youAreHere[evindex++];
-          tempPointer = (char*)malloc(tempInteger+1);
-          strncpy(tempPointer,&youAreHere[evindex],tempInteger);
-          evindex += tempInteger;
-          tempBlock.typecode = 's';
-          tempBlock.data.s = tempPointer;
-          theStack.push(tempBlock);
+        case PUSHKS: pushksFunc();
         break;
         case POPC:
         break;
-        case POPI:
-          cout << "POPI " << endl;
-          if(!theStack.empty()) {
-               tempAddress = chartodir(&youAreHere[evindex]);
-               evindex = evindex + 2;
-               tempBlock = theStack.top();
-               if(tempBlock.typecode = 'i') {
-                   theStack.pop();
-                   tempInteger = tempBlock.data.i;
-                   tempPointer = inttochar(tempInteger);
-                   for(someIndex = 0; someIndex < 4; someIndex++) {
-                     memoryMapper[tempAddress++] = tempPointer[someIndex];
-                   }
-               }
-           }
+        case POPI: popiFunc();
         break;
         case POPF:
         break;
         case POPD:
         break;
-        case POPS:
-          popsFunc();
+        case POPS: popsFunc();
         break;
         case POPX:
         break;
@@ -195,28 +169,13 @@ int main() {
         break;
         case RDC:
         break;
-        case RDI:
-          //Marin
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex+=2;
-          cin >> tempInteger;
-          tempPointer = inttochar(tempInteger);
-          for(someIndex = 0; someIndex < 4; someIndex++){
-            memoryMapper[tempAddress++] = tempPointer[someIndex];
-          }
+        case RDI: rdiFunc();
         break;
         case RDF:
         break;
         case RDD:
         break;
-        case RDS:
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex+=2;
-          getline(cin,tempString);
-          for(someIndex = 0; someIndex<tempString.length(); someIndex++){
-            memoryMapper[tempAddress++] = tempString[someIndex];
-          }
-          memoryMapper[tempAddress] = '\0';
+        case RDS: rdsFunc();
         break;
         case RDAC:
         break;
@@ -229,170 +188,41 @@ int main() {
         case RDAS:
           //is did
         break;
-        case JMP:
-          evindex = chartodir(&youAreHere[evindex]);
-          evindex+=2;
+        case JMP: jmpFunc();
         break;
-        case JMPEQ:
-          if(jmpeq)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPEQ: jmpeqFunc();
         break;
-        case JMPNE:
-          if(jmpne)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPNE: jmpneFunc();
         break;
-        case JMPGT:
-          if(jmpgt)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPGT: jmpgtFunc();
         break;
-        case JMPGE:
-          if(jmpge)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPGE: jmpgeFunc();
         break;
-        case JMPLT:
-          if(jmplt)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPLT: jmpltFunc();
         break;
-        case JMPLE:
-          if(jmple)
-            evindex = chartodir(&youAreHere[evindex]);
-          else
-            evindex+=2;
+        case JMPLE: jmpleFunc();
         break;
         case STX:
         break;
         case STKX:
         break;
-        case INC:
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex += 2;
-          tempInteger = chartoint(&memoryMapper[tempAddress]);
-          tempInteger++;
-          tempPointer = inttochar(tempInteger);
-          for(someIndex = 0; someIndex < 4; someIndex++)
-            memoryMapper[tempAddress++] = tempPointer[someIndex];
+        case INC: incFunc();
         break;
-        case DEC:
-          tempAddress = chartodir(&youAreHere[evindex]);
-          evindex += 2;
-          tempInteger = chartoint(&memoryMapper[tempAddress]);
-          tempInteger--;
-          tempPointer = inttochar(tempInteger);
-          for(someIndex = 0; someIndex < 4; someIndex++)
-            memoryMapper[tempAddress++] = tempPointer[someIndex];
+        case DEC: decFunc();
         break;
-        case ADD:
-          if(theStack.size() < 2)
-              return 1;
-          else {
-              if(theStack.top().typecode == 'i') {
-                tempBlock = theStack.top();
-                theStack.pop();
-                if(theStack.top().typecode == 'i') {
-                  theStack.top().data.i += tempBlock.data.i;
-                }
-              }
-              else {
-                cout << "ERROR";
-                return 1;
-              }
-            }
+        case ADD: if(!addFunc()) return 1;
         break;
-        case SUB:
-        if(theStack.size() < 2)
-            return 1;
-        else {
-            if(theStack.top().typecode == 'i') {
-              tempBlock = theStack.top();
-              theStack.pop();
-              if(theStack.top().typecode == 'i') {
-                tempBlock.data.i = theStack.top().data.i - tempBlock.data.i;
-                theStack.pop();
-              }
-              theStack.push(tempBlock);
-            }
-            else {
-              cout << "ERROR";
-              return 1;
-            }
-          }
+        case SUB: if(!subFunc()) return 1;
         break;
-        case MUL:
-          if(theStack.size() >= 2) {
-            if (theStack.top().typecode == 'i') {
-              tempBlock.typecode = 'i';
-              tempBlock.data.i = theStack.top().data.i;
-              theStack.pop();
-              if (theStack.top().typecode == 'i') {
-                tempBlock.data.i *= theStack.top().data.i;
-                theStack.pop();
-              }
-            }
-            theStack.push(tempBlock);
-          }
+        case MUL: if(!mulFunc()) return 1;
         break;
-        case DIV:
-          if(theStack.size() >= 2) {
-            if (theStack.top().typecode == 'i') {
-              tempBlock.typecode = 'i';
-              tempBlock.data.i = theStack.top().data.i;
-              theStack.pop();
-              if (theStack.top().typecode == 'i') {
-                cout << theStack.top().data.i << " / " << tempBlock.data.i;
-                tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
-                theStack.pop();
-              }
-            }
-
-            theStack.push(tempBlock);
-          }
+        case DIV: if(!divFunc()) return 1;
         break;
-        case MOD:
-          // n%m
-          if(theStack.size() >= 2) {
-            tempBlock = theStack.top();
-            theStack.pop();
-            if(tempBlock.typecode == 'i') {
-              if(theStack.top().typecode == 'i')
-                theStack.top().data.i = (theStack.top().data.i % tempBlock.data.i);
-            }
-          }
-          else
-            return 0;
+        case MOD: if(!modFunc()) return 1;
         break;
-        case CMP:
-          tempBlock = theStack.top();
-          theStack.pop();
-          if(tempBlock.typecode == 'i') {
-            if(theStack.top().typecode == 'i') {
-              jmpeq = (theStack.top().data.i == tempBlock.data.i) ? true : false;
-              jmpne = (theStack.top().data.i != tempBlock.data.i) ? true : false;
-              jmple = (theStack.top().data.i <= tempBlock.data.i) ? true : false;
-              jmplt = (theStack.top().data.i < tempBlock.data.i) ? true : false;
-              jmpge = (theStack.top().data.i >= tempBlock.data.i) ? true : false;
-              jmpgt = (theStack.top().data.i > tempBlock.data.i) ? true : false;
-              theStack.push(tempBlock);
-            }
-          } else if(tempBlock.typecode == 'f') {
-
-          } else if(tempBlock.typecode == 'd') {
-
-          }
+        case CMP: cmpFunc();
         break;
-        case HALT:
-          cout << "Press ENTER to exit" << endl;
-          char ocdontsteal;
-          cin >> ocdontsteal;
+        case HALT: system("pause");
           return 0;
         break;
         default:
@@ -402,6 +232,276 @@ int main() {
     }
     return 1;
 }
+
+void pushiFunc()  //marin
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 'i';
+  tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+}  //void pushiFunc()
+
+void pushsFunc()
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  int length = strlen(&memoryMapper[tempAddress]);
+  tempPointer = (char *) malloc(length + 1);
+  strcpy(tempPointer, &memoryMapper[tempAddress]);
+  tempBlock.typecode = 's';
+  tempBlock.data.s = tempPointer;
+  theStack.push(tempBlock);
+}  //void pushsFunc()
+
+void pushkiFunc()  //marin
+{
+  cout << "PUSHKI " << endl;
+  tempBlock.typecode = 'i';
+  tempBlock.data.i = chartoint(&youAreHere[evindex]);
+  evindex += 4;
+  theStack.push(tempBlock);
+}  //pushkiFunc()
+
+void pushksFunc()
+{
+  tempInteger = youAreHere[evindex++];
+  tempPointer = (char*)malloc(tempInteger+1);
+  strncpy(tempPointer,&youAreHere[evindex],tempInteger);
+  evindex += tempInteger;
+  tempBlock.typecode = 's';
+  tempBlock.data.s = tempPointer;
+  theStack.push(tempBlock);
+}  //pushksFunc()
+
+void popiFunc()
+{
+  cout << "POPI " << endl;
+  if(!theStack.empty()) {
+    tempAddress = chartodir(&youAreHere[evindex]);
+    evindex = evindex + 2;
+    tempBlock = theStack.top();
+    if(tempBlock.typecode = 'i') {
+      theStack.pop();
+      tempInteger = tempBlock.data.i;
+      tempPointer = inttochar(tempInteger);
+      for(someIndex = 0; someIndex < 4; someIndex++)
+        memoryMapper[tempAddress++] = tempPointer[someIndex];
+    }
+  }
+}  //popiFunc()
+
+void rdiFunc()  //marin
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex+=2;
+  cin >> tempInteger;
+  tempPointer = inttochar(tempInteger);
+  for(someIndex = 0; someIndex < 4; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+}  //rdiFunc()
+
+void rdsFunc()
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex+=2;
+  getline(cin,tempString);
+  for(someIndex = 0; someIndex<tempString.length(); someIndex++)
+    memoryMapper[tempAddress++] = tempString[someIndex];
+  memoryMapper[tempAddress] = '\0';
+}  //rdsFunc()
+
+void jmpFunc()
+{
+  evindex = chartodir(&youAreHere[evindex]);
+  evindex+=2;
+}  //jmp
+
+void jmpeqFunc()
+{
+  if(jmpeq)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jmpeqFunc()
+
+void jmpneFunc()
+{
+  if(jmpne)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jumpneFunc()
+
+void jmpgtFunc()
+{
+  if(jmpgt)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jmpgtFunc()
+
+void jmpgeFunc()
+{
+  if(jmpge)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jmpgeFunc()
+
+void jmpltFunc()
+{
+  if(jmplt)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jmpltFunc()
+
+void jmpleFunc()
+{
+  if(jmple)
+    evindex = chartodir(&youAreHere[evindex]);
+  else
+    evindex+=2;
+}  //jmpleFunc()
+
+void incFunc()
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempInteger = chartoint(&memoryMapper[tempAddress]);
+  tempInteger++;
+  tempPointer = inttochar(tempInteger);
+  for(someIndex = 0; someIndex < 4; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+}  //void incFunc()
+
+void decFunc()
+{
+    tempAddress = chartodir(&youAreHere[evindex]);
+    evindex += 2;
+    tempInteger = chartoint(&memoryMapper[tempAddress]);
+    tempInteger--;
+    tempPointer = inttochar(tempInteger);
+    for(someIndex = 0; someIndex < 4; someIndex++)
+      memoryMapper[tempAddress++] = tempPointer[someIndex];
+}  //void decFunc()
+
+bool addFunc()
+{
+  if(theStack.size() < 2)
+    return false;
+  else {
+    if(theStack.top().typecode == 'i') {
+      tempBlock = theStack.top();
+      theStack.pop();
+      if(theStack.top().typecode == 'i') {
+        theStack.top().data.i += tempBlock.data.i;
+      }
+    }
+    else {
+      cout << "ERROR";
+      return false;
+    }
+  }
+}  //bool addFunc()
+
+bool subFunc()
+{
+  if(theStack.size() < 2)
+    return false;
+  else {
+    if(theStack.top().typecode == 'i') {
+      tempBlock = theStack.top();
+      theStack.pop();
+      if(theStack.top().typecode == 'i') {
+        tempBlock.data.i = theStack.top().data.i - tempBlock.data.i;
+        theStack.pop();
+      }
+      theStack.push(tempBlock);
+    }
+    else {
+      cout << "ERROR";
+      return false;
+    }
+  } 
+  return true; 
+}  //void subFunc()
+
+bool mulFunc()
+{
+  if(theStack.size() >= 2) {
+    if (theStack.top().typecode == 'i') {
+      tempBlock.typecode = 'i';
+      tempBlock.data.i = theStack.top().data.i;
+      theStack.pop();
+      if (theStack.top().typecode == 'i') {
+        tempBlock.data.i *= theStack.top().data.i;
+        theStack.pop();
+      }
+    }
+    theStack.push(tempBlock);
+    return true;
+  }
+  return false;
+}  //mulFunc()
+
+bool divFunc()
+{
+  if(theStack.size() >= 2) {
+    if (theStack.top().typecode == 'i') {
+      tempBlock.typecode = 'i';
+      tempBlock.data.i = theStack.top().data.i;
+      theStack.pop();
+      if (theStack.top().typecode == 'i') {
+        cout << theStack.top().data.i << " / " << tempBlock.data.i;
+        tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
+        theStack.pop();
+      }
+    }
+
+    theStack.push(tempBlock);
+    return true;
+  }
+  return false;
+}  //void divFunc()
+
+bool modFunc()
+{
+  // n%m
+  if(theStack.size() >= 2) {
+    tempBlock = theStack.top();
+    theStack.pop();
+    if(tempBlock.typecode == 'i') {
+      if(theStack.top().typecode == 'i')
+        theStack.top().data.i = (theStack.top().data.i % tempBlock.data.i);
+    }
+    return true;
+  }
+  return false;
+}  //void modFunc()
+
+void cmpFunc()
+{
+  tempBlock = theStack.top();
+  theStack.pop();
+  if(tempBlock.typecode == 'i') {
+    if(theStack.top().typecode == 'i') {
+      jmpeq = (theStack.top().data.i == tempBlock.data.i) ? true : false;
+      jmpne = (theStack.top().data.i != tempBlock.data.i) ? true : false;
+      jmple = (theStack.top().data.i <= tempBlock.data.i) ? true : false;
+      jmplt = (theStack.top().data.i < tempBlock.data.i) ? true : false;
+      jmpge = (theStack.top().data.i >= tempBlock.data.i) ? true : false;
+      jmpgt = (theStack.top().data.i > tempBlock.data.i) ? true : false;
+      theStack.push(tempBlock);
+    }
+  } else if(tempBlock.typecode == 'f') {
+
+  } else if(tempBlock.typecode == 'd') {
+
+  }
+}  //cmpFunc()
+
 void popsFunc()
 {
   if(!theStack.empty())
