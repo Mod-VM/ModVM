@@ -35,6 +35,9 @@ void pushksFunc();
 void pushkiFunc();
 void pushsFunc();
 void pushiFunc();
+void pushkfFunc();
+void popfFunc();
+void prtfFunc();
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
@@ -74,6 +77,8 @@ int tempInteger;
 char* tempPointer;
 string tempString;
 bool errorFlag = false;
+float tempFloat;
+double tempDouble;
 
 int main() {
 
@@ -99,7 +104,7 @@ int main() {
         break;
         case PRTI: prtiFunc();
         break;
-        case PRTF:
+        case PRTF: prtfFunc();
         break;
         case PRTD:
         break;
@@ -139,7 +144,7 @@ int main() {
         break;
         case PUSHKI: pushkiFunc();
         break;
-        case PUSHKF:
+        case PUSHKF:pushkfFunc();
         break;
         case PUSHKD:
         break;
@@ -149,7 +154,7 @@ int main() {
         break;
         case POPI: popiFunc();
         break;
-        case POPF:
+        case POPF: popfFunc();
         break;
         case POPD:
         break;
@@ -233,6 +238,15 @@ int main() {
     return 1;
 }
 
+void pushkfFunc()  //isai
+{
+  std::cout << "PUSHKF " << std::endl;
+  tempBlock.typecode = 'f';
+  tempBlock.data.f = chartofloat(&youAreHere[evindex]);
+  evindex += 4;
+  theStack.push(tempBlock);
+}  //void pushkfFunc()
+
 void pushiFunc()  //marin
 {
   tempAddress = chartodir(&youAreHere[evindex]);
@@ -261,7 +275,7 @@ void pushkiFunc()  //marin
   tempBlock.data.i = chartoint(&youAreHere[evindex]);
   evindex += 4;
   theStack.push(tempBlock);
-}  //pushkiFunc()
+}  //void pushkiFunc()
 
 void pushksFunc()
 {
@@ -272,7 +286,26 @@ void pushksFunc()
   tempBlock.typecode = 's';
   tempBlock.data.s = tempPointer;
   theStack.push(tempBlock);
-}  //pushksFunc()
+}  //void pushksFunc()
+
+void popfFunc() //isai
+{
+  std::cout << "POPF " << std::endl;
+  if(!theStack.empty())
+  {
+    tempAddress = chartodir(&youAreHere[evindex]);
+    evindex = evindex + 2;
+    tempBlock = theStack.top();
+    if(tempBlock.typecode = 'f')
+    {
+      theStack.pop();
+      tempFloat = tempBlock.data.f;
+      tempPointer = floattochar(tempFloat);
+      for(someIndex = 0; someIndex < 4; someIndex++)
+        memoryMapper[tempAddress++] = tempPointer[someIndex];
+    }
+  }
+}  //void popfFunc()
 
 void popiFunc()
 {
@@ -289,7 +322,7 @@ void popiFunc()
         memoryMapper[tempAddress++] = tempPointer[someIndex];
     }
   }
-}  //popiFunc()
+}  //void popiFunc()
 
 void rdiFunc()  //marin
 {
@@ -299,7 +332,7 @@ void rdiFunc()  //marin
   tempPointer = inttochar(tempInteger);
   for(someIndex = 0; someIndex < 4; someIndex++)
     memoryMapper[tempAddress++] = tempPointer[someIndex];
-}  //rdiFunc()
+}  //void rdiFunc()
 
 void rdsFunc()
 {
@@ -309,13 +342,13 @@ void rdsFunc()
   for(someIndex = 0; someIndex<tempString.length(); someIndex++)
     memoryMapper[tempAddress++] = tempString[someIndex];
   memoryMapper[tempAddress] = '\0';
-}  //rdsFunc()
+}  //void rdsFunc()
 
 void jmpFunc()
 {
   evindex = chartodir(&youAreHere[evindex]);
   evindex+=2;
-}  //jmp
+}  //void jmp
 
 void jmpeqFunc()
 {
@@ -323,7 +356,7 @@ void jmpeqFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jmpeqFunc()
+}  //void jmpeqFunc()
 
 void jmpneFunc()
 {
@@ -331,7 +364,7 @@ void jmpneFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jumpneFunc()
+}  //void jumpneFunc()
 
 void jmpgtFunc()
 {
@@ -339,7 +372,7 @@ void jmpgtFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jmpgtFunc()
+}  //void jmpgtFunc()
 
 void jmpgeFunc()
 {
@@ -347,7 +380,7 @@ void jmpgeFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jmpgeFunc()
+}  //void jmpgeFunc()
 
 void jmpltFunc()
 {
@@ -355,7 +388,7 @@ void jmpltFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jmpltFunc()
+}  //void jmpltFunc()
 
 void jmpleFunc()
 {
@@ -363,7 +396,7 @@ void jmpleFunc()
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
-}  //jmpleFunc()
+}  //void jmpleFunc()
 
 void incFunc()
 {
@@ -404,6 +437,7 @@ bool addFunc()
       return false;
     }
   }
+  return true;
 }  //bool addFunc()
 
 bool subFunc()
@@ -534,6 +568,13 @@ void prtiFunc()  //marin
   evindex += 2;
   cout << chartoint(&memoryMapper[tempAddress]);
 } // prtiFunc()
+
+void prtfFunc()  //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  cout << chartofloat(&memoryMapper[tempAddress]);
+}  //void prtfFunc()
 
 void fileOpen()
 {
