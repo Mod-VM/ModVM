@@ -4,7 +4,7 @@ int chartoint (char* c) {
   int x = 0;
   for(int i = 0; i < 4; i++) {
     x <<= 8;
-    x += c[i];
+    x += (unsigned char) c[i];
   }
   return x;
 }
@@ -33,7 +33,7 @@ double chartodouble (char* c) {
   long x;
   for(int i=0; i<8; i++) {
     x = x << 8;
-    x = c[i];
+    x = (unsigned char)c[i];
   }
   return *(double*)&x;
 }
@@ -56,7 +56,7 @@ int chartodir (char* c) {
   int x = 0;
   for(int i = 0; i < 2; i++) {
     x <<= 8;
-    x += c[i];
+    x += (unsigned char)c[i];
   }
   return x;
 }
