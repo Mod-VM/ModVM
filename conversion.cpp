@@ -30,15 +30,15 @@ char* floattochar (float f) {
 }
 
 double chartodouble (char* c) {
-  long x;
+  long long x;
   for(int i=0; i<8; i++) {
     x = x << 8;
-    x = (unsigned char)c[i];
+    x += (unsigned char)c[i];
   }
   return *(double*)&x;
 }
 
-char* longtochar (long l) {
+char* longtochar (long long l) {
   char* c = (char*)malloc(8);
   for(int i=7; i>=0; i--) {
     c[i] = (char)l;
@@ -48,7 +48,7 @@ char* longtochar (long l) {
 }
 
 char* doubletochar (double d) {
-  long l = *(long*)&d;
+  long long l = *(long long*)&d;
   return longtochar(l);
 }
 

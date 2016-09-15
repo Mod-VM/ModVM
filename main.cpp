@@ -38,6 +38,18 @@ void pushiFunc();
 void pushkfFunc();
 void popfFunc();
 void prtfFunc();
+void pushkcFunc();
+void popcFunc();
+void prtcFunc();
+void pushkdFunc();
+void popdFunc();
+void prtdFunc();
+void pushcFunc();
+void pushfFunc();
+void pushdFunc();
+bool rdcFunc();
+void rdfFunc();
+void rddFunc();
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
@@ -100,13 +112,13 @@ int main() {
         case PRTCR:
           cout << "\n";
         break;
-        case PRTC:
+        case PRTC: prtcFunc();
         break;
         case PRTI: prtiFunc();
         break;
         case PRTF: prtfFunc();
         break;
-        case PRTD:
+        case PRTD:prtdFunc();
         break;
         case PRTS: prtsFunc();
         break;
@@ -120,13 +132,13 @@ int main() {
         break;
         case PRTAS:
         break;
-        case PUSHC:
+        case PUSHC: pushcFunc();
         break;
         case PUSHI: pushiFunc();
         break;
-        case PUSHF:
+        case PUSHF: pushfFunc();
         break;
-        case PUSHD:
+        case PUSHD: pushdFunc();
         break;
         case PUSHS: pushsFunc();
           break;
@@ -140,23 +152,23 @@ int main() {
         break;
         case PUSHAS:
         break;
-        case PUSHKC:
+        case PUSHKC: pushkcFunc();
         break;
         case PUSHKI: pushkiFunc();
         break;
-        case PUSHKF:pushkfFunc();
+        case PUSHKF: pushkfFunc();
         break;
-        case PUSHKD:
+        case PUSHKD: pushkdFunc();
         break;
         case PUSHKS: pushksFunc();
         break;
-        case POPC:
+        case POPC: popcFunc();
         break;
         case POPI: popiFunc();
         break;
         case POPF: popfFunc();
         break;
-        case POPD:
+        case POPD: popdFunc();
         break;
         case POPS: popsFunc();
         break;
@@ -172,13 +184,13 @@ int main() {
         break;
         case POPAS:
         break;
-        case RDC:
+        case RDC: if(!rdcFunc()) return 1;
         break;
         case RDI: rdiFunc();
         break;
-        case RDF:
+        case RDF: rdfFunc();
         break;
-        case RDD:
+        case RDD: rddFunc();
         break;
         case RDS: rdsFunc();
         break;
@@ -238,6 +250,105 @@ int main() {
     return 1;
 }
 
+void rddFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  std::cin >> tempDouble;
+  tempPointer = doubletochar(tempDouble);
+  for(int someIndex = 0; someIndex < 8; someIndex++)
+    memoryMapper[someIndex++] = tempPointer[someIndex];
+}  //void rddFunc()
+
+void rdfFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  std::cin >> tempFloat;
+  tempPointer = floattochar(tempFloat);
+  for(int someIndex = 0; someIndex < 4; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+}  //void rdfFunc()
+
+bool rdcFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  getline(cin,tempString);
+  if(tempString.length() > 1)
+  {
+    std::cout << "char overflow! \n";
+    return false;
+  }
+  memoryMapper[tempAddress] = tempString[0];
+  return true;
+}  //void rdcFunc()
+
+void pushdFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 'd';
+  tempBlock.data.d = chartodouble(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+}  //void pushkdFunc()
+
+void pushfFunc()  //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 'f';
+  tempBlock.data.f = chartofloat(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+}  //void pushfFunc()
+
+void pushcFunc()  //isai
+{
+  std::cout << "PUSHC" << std::endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 's';
+  tempBlock.data.s = new char[1];
+  tempBlock.data.s[0] = memoryMapper[tempAddress];
+  theStack.push(tempBlock);
+}  //void pushcFunc()
+
+void pushkdFunc()  //isai
+{
+  std::cout << "PUSHKD " << std::endl;
+  tempBlock.data.d = chartodouble(&youAreHere[evindex]);
+  evindex += 8;
+  tempBlock.typecode = 'd';
+  theStack.push(tempBlock); 
+}  //void pushkdFunc()
+
+void popdFunc()  //isai
+{
+  std::cout << "POPD" << std::endl;
+  if(!theStack.empty())
+  {
+    tempAddress = chartodir(&youAreHere[evindex]);
+    evindex += 2;
+    tempBlock = theStack.top();
+    if(theStack.top().typecode == 'd')
+    {
+      tempDouble = tempBlock.data.d;
+      tempPointer = doubletochar(tempDouble);
+      theStack.pop();
+      for(int ind = 0; ind < 8; ind++)
+        memoryMapper[tempAddress++] = tempPointer[ind];
+    }
+  }
+}  //void popdFunc()
+
+void prtdFunc()  //isai
+{
+  std::cout << "PRTD" << std::endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  std::cout << chartodouble(&memoryMapper[tempAddress]);
+}  //void prtdFunc()
+
 void pushkfFunc()  //isai
 {
   std::cout << "PUSHKF " << std::endl;
@@ -268,6 +379,16 @@ void pushsFunc()
   theStack.push(tempBlock);
 }  //void pushsFunc()
 
+void pushkcFunc()  //isai
+{
+  std::cout << "PUSHKC " << endl;
+  tempBlock.typecode = 's';
+  tempBlock.data.s = new char[1];
+  tempBlock.data.s[0] = youAreHere[evindex];
+  evindex++;
+  theStack.push(tempBlock); 
+}  //void pushkcFunc()
+
 void pushkiFunc()  //marin
 {
   cout << "PUSHKI " << endl;
@@ -294,7 +415,7 @@ void popfFunc() //isai
   if(!theStack.empty())
   {
     tempAddress = chartodir(&youAreHere[evindex]);
-    evindex = evindex + 2;
+    evindex += 2;
     tempBlock = theStack.top();
     if(tempBlock.typecode = 'f')
     {
@@ -306,6 +427,21 @@ void popfFunc() //isai
     }
   }
 }  //void popfFunc()
+
+void popcFunc()  //isai
+{
+  std::cout << "POPC " << std::endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock = theStack.top();
+  if(tempBlock.typecode = 's')
+  {
+    theStack.pop();
+    tempPointer = new char[1];
+    tempPointer[0] = tempBlock.data.s[0];
+    memoryMapper[tempAddress] = tempPointer[0];
+  }
+}  //void popcFunc()
 
 void popiFunc()
 {
@@ -568,6 +704,12 @@ void prtiFunc()  //marin
   evindex += 2;
   cout << chartoint(&memoryMapper[tempAddress]);
 } // prtiFunc()
+void prtcFunc()  //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  cout << memoryMapper[tempAddress];
+}  // void prtcFunc()
 
 void prtfFunc()  //isai
 {
