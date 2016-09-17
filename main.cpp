@@ -92,6 +92,8 @@ bool errorFlag = false;
 float tempFloat;
 double tempDouble;
 
+int cmpeval, arrindex;
+
 int main() {
 
   fileOpen();
@@ -488,7 +490,7 @@ void jmpFunc()
 
 void jmpeqFunc()
 {
-  if(jmpeq)
+  if(cmpeval == 0)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -496,7 +498,7 @@ void jmpeqFunc()
 
 void jmpneFunc()
 {
-  if(jmpne)
+  if(cmpeval != 0)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -504,7 +506,7 @@ void jmpneFunc()
 
 void jmpgtFunc()
 {
-  if(jmpgt)
+  if(cmpeval > 0)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -512,7 +514,7 @@ void jmpgtFunc()
 
 void jmpgeFunc()
 {
-  if(jmpge)
+  if(cmpeval > -1)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -520,7 +522,7 @@ void jmpgeFunc()
 
 void jmpltFunc()
 {
-  if(jmplt)
+  if(cmpeval < 0)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -528,7 +530,7 @@ void jmpltFunc()
 
 void jmpleFunc()
 {
-  if(jmple)
+  if(cmpeval < 1)
     evindex = chartodir(&youAreHere[evindex]);
   else
     evindex+=2;
@@ -564,7 +566,7 @@ bool addFunc()
   {
     tempBlock = theStack.top();
     theStack.pop();
-    switch(theStack.top().typecode) 
+    switch(tempBlock.typecode) 
     {
       case 'i':
         if(theStack.top().typecode == 'i')
@@ -688,20 +690,31 @@ void cmpFunc()
 {
   tempBlock = theStack.top();
   theStack.pop();
-  if(tempBlock.typecode == 'i') {
-    if(theStack.top().typecode == 'i') {
-      jmpeq = (theStack.top().data.i == tempBlock.data.i) ? true : false;
-      jmpne = (theStack.top().data.i != tempBlock.data.i) ? true : false;
-      jmple = (theStack.top().data.i <= tempBlock.data.i) ? true : false;
-      jmplt = (theStack.top().data.i < tempBlock.data.i) ? true : false;
-      jmpge = (theStack.top().data.i >= tempBlock.data.i) ? true : false;
-      jmpgt = (theStack.top().data.i > tempBlock.data.i) ? true : false;
-      theStack.push(tempBlock);
-    }
-  } else if(tempBlock.typecode == 'f') {
-
-  } else if(tempBlock.typecode == 'd') {
-
+  switch(tempBlock.typecode)
+  {
+    case 'i':
+      if(theStack.top().typecode == 'i')
+        cmpeval = 0;
+        if(theStack.top().data.i > tempBlock.data.i)
+          cmpeval++;
+        else if(theStack.top().data.i < tempBlock.data.i)
+          cmpeval--;
+    break;
+    case 'f':
+      if(theStack.top().typecode == 'f')
+        cmpeval = 0;
+        if(theStack.top().data.f > tempBlock.data.f)
+          cmpeval++;
+        else if(theStack.top().data.f < tempBlock.data.f)
+          cmpeval--;
+    break;
+    case 'd':
+      if(theStack.top().typecode == 'd')
+        cmpeval = 0;
+        if(theStack.top().data.d > tempBlock.data.d)
+          cmpeval++;
+        else if(theStack.top().data.d < tempBlock.data.d)
+          cmpeval--;
   }
 }  //cmpFunc()
 
