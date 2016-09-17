@@ -560,17 +560,24 @@ bool addFunc()
 {
   if(theStack.size() < 2)
     return false;
-  else {
-    if(theStack.top().typecode == 'i') {
-      tempBlock = theStack.top();
-      theStack.pop();
-      if(theStack.top().typecode == 'i') {
-        theStack.top().data.i += tempBlock.data.i;
-      }
-    }
-    else {
-      cout << "ERROR";
-      return false;
+  else 
+  {
+    tempBlock = theStack.top();
+    theStack.pop();
+    switch(theStack.top().typecode) 
+    {
+      case 'i':
+        if(theStack.top().typecode == 'i')
+          theStack.top().data.i += tempBlock.data.i;
+      break;
+      case 'f':
+        if(theStack.top().typecode == 'f')
+          theStack.top().data.f += tempBlock.data.f;
+      break;
+      case 'd':
+        if (theStack.top().typecode == 'd')
+          theStack.top().data.d += tempBlock.data.d;
+        break;
     }
   }
   return true;
@@ -581,35 +588,54 @@ bool subFunc()
   if(theStack.size() < 2)
     return false;
   else {
-    if(theStack.top().typecode == 'i') {
-      tempBlock = theStack.top();
-      theStack.pop();
-      if(theStack.top().typecode == 'i') {
-        tempBlock.data.i = theStack.top().data.i - tempBlock.data.i;
-        theStack.pop();
-      }
-      theStack.push(tempBlock);
+    tempBlock = theStack.top();
+    theStack.pop();
+    switch(tempBlock.typecode) {
+      case 'i':
+        if(theStack.top().typecode == 'i') {
+          tempBlock.data.i = theStack.top().data.i - tempBlock.data.i;
+        }
+      break;
+      case 'f':
+        if(theStack.top().typecode == 'f')
+        {
+          tempBlock.data.f = theStack.top().data.f - tempBlock.data.f;
+        }
+      break;
+      case 'd':
+        if(theStack.top().typecode == 'd')
+        {
+          tempBlock.data.d = theStack.top().data.d - tempBlock.data.d;
+        }
+      break;
     }
-    else {
-      cout << "ERROR";
-      return false;
-    }
-  } 
+    theStack.pop();
+    theStack.push(tempBlock);
+  }
   return true; 
 }  //void subFunc()
 
 bool mulFunc()
 {
   if(theStack.size() >= 2) {
-    if (theStack.top().typecode == 'i') {
-      tempBlock.typecode = 'i';
-      tempBlock.data.i = theStack.top().data.i;
-      theStack.pop();
-      if (theStack.top().typecode == 'i') {
-        tempBlock.data.i *= theStack.top().data.i;
-        theStack.pop();
-      }
+    tempBlock = theStack.top();
+    theStack.pop();
+    switch(tempBlock.typecode)
+    {
+      case 'i':
+        if (theStack.top().typecode == 'i') {
+          tempBlock.data.i *= theStack.top().data.i;
+        }
+      break;
+      case 'f':
+        if(theStack.top().typecode == 'f')
+          tempBlock.data.f *= theStack.top().data.f;
+      break;
+      case 'd':
+        if(theStack.top().typecode =='d')
+          tempBlock.data.d *= theStack.top().data.d;
     }
+    theStack.pop();
     theStack.push(tempBlock);
     return true;
   }
@@ -619,17 +645,24 @@ bool mulFunc()
 bool divFunc()
 {
   if(theStack.size() >= 2) {
-    if (theStack.top().typecode == 'i') {
-      tempBlock.typecode = 'i';
-      tempBlock.data.i = theStack.top().data.i;
-      theStack.pop();
-      if (theStack.top().typecode == 'i') {
-        cout << theStack.top().data.i << " / " << tempBlock.data.i;
-        tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
-        theStack.pop();
-      }
+    tempBlock = theStack.top();
+    theStack.pop();
+    switch(theStack.top().typecode)
+    {
+      case 'i':
+        if (theStack.top().typecode == 'i')
+          tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
+      break;
+      case 'f':
+        if(theStack.top().typecode == 'f')
+          tempBlock.data.f = theStack.top().data.f / tempBlock.data.f;
+      break;
+      case 'd':
+        if(theStack.top().typecode == 'd')
+          tempBlock.data.d = theStack.top().data.d / tempBlock.data.d;
+      break;
     }
-
+    theStack.pop();
     theStack.push(tempBlock);
     return true;
   }
