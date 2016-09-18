@@ -50,6 +50,11 @@ void pushdFunc();
 bool rdcFunc();
 void rdfFunc();
 void rddFunc();
+bool popxFunc();
+void stkxFunc();
+void stxFunc();
+void pushaiFunc();
+void popaiFunc();
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
@@ -146,7 +151,7 @@ int main() {
           break;
         case PUSHAC:
         break;
-        case PUSHAI:
+        case PUSHAI: pushaiFunc();
         break;
         case PUSHAF:
         break;
@@ -174,11 +179,11 @@ int main() {
         break;
         case POPS: popsFunc();
         break;
-        case POPX:
+        case POPX: if(!popxFunc()) return 1;
         break;
         case POPAC:
         break;
-        case POPAI:
+        case POPAI: popaiFunc();
         break;
         case POPAF:
         break;
@@ -221,9 +226,9 @@ int main() {
         break;
         case JMPLE: jmpleFunc();
         break;
-        case STX:
+        case STX: stxFunc();
         break;
-        case STKX:
+        case STKX: stkxFunc();
         break;
         case INC: incFunc();
         break;
@@ -250,7 +255,58 @@ int main() {
       }
     }
     return 1;
-}
+}  //int main()
+
+void popaiFunc()  //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock = theStack.top();
+  if(theStack.top().typecode == 'i')
+  {
+    tempInteger = tempBlock.data.i;
+    tempPointer = inttochar(tempInteger);
+    theStack.pop();
+    for(int ind = 0; ind < 4; ind++)
+      memoryMapper[tempAddress++] = tempPointer[ind];
+    std::cout << chartoint(&memoryMapper[(tempAddress-4)]) << std::endl;
+  }
+}  //void popaiFunc()
+
+void pushaiFunc()  //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 'i';
+  tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+}  //void pushai()
+
+void stxFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  arrindex = chartoint(&memoryMapper[tempAddress]);
+  std::cout << "this is the index: " << arrindex << std::endl;
+}  //void stxFunc()
+
+void stkxFunc() //isai
+{
+  arrindex = chartoint(&youAreHere[evindex]);
+  evindex += 4;
+}  //void stkxFunc()
+
+bool popxFunc() //isai
+{
+  if(!theStack.empty() && theStack.top().typecode == 'i')
+  {
+    arrindex = theStack.top().data.i;
+    theStack.pop();
+    return true;
+  }
+  std::cout << "array index error!";
+  return false;
+}  //bool popxFunc()
 
 void rddFunc() //isai
 {
