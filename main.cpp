@@ -87,7 +87,7 @@ int main() {
         break;
         case PRTAF: prtafFunc();
         break;
-        case PRTAD:
+        case PRTAD: prtadFunc();
         break;
         case PRTAS:
         break;
@@ -107,7 +107,7 @@ int main() {
         break;
         case PUSHAF: pushafFunc();
         break;
-        case PUSHAD:
+        case PUSHAD: pushadFunc();
         break;
         case PUSHAS:
         break;
@@ -139,7 +139,7 @@ int main() {
         break;
         case POPAF: popafFunc();
         break;
-        case POPAD:
+        case POPAD: popadFunc();
         break;
         case POPAS:
         break;
@@ -159,7 +159,7 @@ int main() {
         break;
         case RDAF: rdafFunc();
         break;
-        case RDAD:
+        case RDAD: rdadFunc();
         break;
         case RDAS:
           //is did
@@ -857,6 +857,7 @@ void rdafFunc() //marin
 } //void rdafFunc()
 
 void prtadFunc() { //alex
+  cout << "prtadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -865,6 +866,7 @@ void prtadFunc() { //alex
 } //void prtadFunc()
 
 void pushadFunc() { //alex
+  cout << "pushadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -875,6 +877,7 @@ void pushadFunc() { //alex
 } //void pushadFunc()
 
 void rdadFunc() { //alex
+  cout << "rdadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -886,6 +889,7 @@ void rdadFunc() { //alex
 } //void rdadFunc()
 
 void popadFunc() { //alex
+  cout << "popadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
