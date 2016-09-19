@@ -61,5 +61,6 @@ void prtacFunc();
 void pushacFunc();
 void popacFunc();
 bool rdacFunc();
-
+void prtaiFunc();
+void rdaiFunc();
 #endif

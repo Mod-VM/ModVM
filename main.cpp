@@ -83,7 +83,7 @@ int main() {
         break;
         case PRTAC: prtacFunc();
         break;
-        case PRTAI:
+        case PRTAI: prtaiFunc();
         break;
         case PRTAF: prtafFunc();
         break;
@@ -155,7 +155,7 @@ int main() {
         break;
         case RDAC: if(!rdacFunc()) return 1;
         break;
-        case RDAI:
+        case RDAI: rdaiFunc();
         break;
         case RDAF: rdafFunc();
         break;
@@ -211,6 +211,7 @@ int main() {
 void popaiFunc()  //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
   evindex += 2;
   tempBlock = theStack.top();
   if(theStack.top().typecode == 'i')
@@ -227,6 +228,7 @@ void popaiFunc()  //isai
 void pushaiFunc()  //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
   evindex += 2;
   tempBlock.typecode = 'i';
   tempBlock.data.i = chartoint(&memoryMapper[tempAddress]);
@@ -950,4 +952,25 @@ bool rdacFunc() //luis
   }
   memoryMapper[tempAddress+(arrindex)] = tempString[0];
   return true;
+}
+
+void prtaiFunc()//jl
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  cout << "AHI TE VA EL TEMPADDRESS " << tempAddress;
+  evindex += 2;
+  cout << chartoint(&memoryMapper[tempAddress]);
+}
+
+void rdaiFunc()//jl
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  evindex += 2;
+  cin >> tempInteger;
+
+  tempPointer = inttochar(tempInteger);
+  for(int someIndex = 0; someIndex < 4; someIndex++)
+      memoryMapper[tempAddress++] = tempPointer[someIndex];
 }
