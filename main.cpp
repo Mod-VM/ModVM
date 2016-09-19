@@ -862,6 +862,10 @@ void prtadFunc() { //alex
   evindex += 2;
   tempInteger = 8*arrindex;
   tempAddress += tempInteger;
+  cout << tempAddress << endl;
+  //printf("%x", memoryMapper[tempAddress]);
+  //printf("%x", memoryMapper[tempAddress+1]);
+  //printf("%x", memoryMapper[tempAddress+2]);
   cout << chartodouble(&memoryMapper[tempAddress]);
 } //void prtadFunc()
 
@@ -891,10 +895,15 @@ void rdadFunc() { //alex
 void popadFunc() { //alex
   cout << "popadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
   evindex += 2;
-  tempInteger = 8*arrindex;
-  tempAddress += tempInteger;
-  tempPointer = doubletochar(tempBlock.data.d);
-  for(someIndex = 0; someIndex < 8; someIndex++)
-    memoryMapper[tempAddress++] = tempPointer[someIndex];
+  tempBlock = theStack.top();
+  if(theStack.top().typecode == 'd')
+  {
+    tempFloat = tempBlock.data.d;
+    tempPointer = doubletochar(tempFloat);
+    theStack.pop();
+    for(int ind = 0; ind < 4; ind++)
+      memoryMapper[tempAddress++] = tempPointer[ind];
+  }
 } //void popadFunc()
