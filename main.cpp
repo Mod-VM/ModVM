@@ -315,7 +315,6 @@ void pushfFunc()  //isai
 
 void pushcFunc()  //isai
 {
-  std::cout << "PUSHC" << std::endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempBlock.typecode = 's';
@@ -326,7 +325,6 @@ void pushcFunc()  //isai
 
 void pushkdFunc()  //isai
 {
-  std::cout << "PUSHKD " << std::endl;
   tempBlock.data.d = chartodouble(&youAreHere[evindex]);
   evindex += 8;
   tempBlock.typecode = 'd';
@@ -335,7 +333,6 @@ void pushkdFunc()  //isai
 
 void popdFunc()  //isai
 {
-  std::cout << "POPD" << std::endl;
   if(!theStack.empty())
   {
     tempAddress = chartodir(&youAreHere[evindex]);
@@ -354,7 +351,6 @@ void popdFunc()  //isai
 
 void prtdFunc()  //isai
 {
-  std::cout << "PRTD" << std::endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   std::cout << chartodouble(&memoryMapper[tempAddress]);
@@ -362,7 +358,6 @@ void prtdFunc()  //isai
 
 void pushkfFunc()  //isai
 {
-  std::cout << "PUSHKF " << std::endl;
   tempBlock.typecode = 'f';
   tempBlock.data.f = chartofloat(&youAreHere[evindex]);
   evindex += 4;
@@ -392,7 +387,6 @@ void pushsFunc()
 
 void pushkcFunc()  //isai
 {
-  std::cout << "PUSHKC " << endl;
   tempBlock.typecode = 's';
   tempBlock.data.s = new char[1];
   tempBlock.data.s[0] = youAreHere[evindex];
@@ -402,7 +396,6 @@ void pushkcFunc()  //isai
 
 void pushkiFunc()  //marin
 {
-  cout << "PUSHKI " << endl;
   tempBlock.typecode = 'i';
   tempBlock.data.i = chartoint(&youAreHere[evindex]);
   evindex += 4;
@@ -422,7 +415,6 @@ void pushksFunc()
 
 void popfFunc() //isai
 {
-  std::cout << "POPF " << std::endl;
   if(!theStack.empty())
   {
     tempAddress = chartodir(&youAreHere[evindex]);
@@ -441,7 +433,6 @@ void popfFunc() //isai
 
 void popcFunc()  //isai
 {
-  std::cout << "POPC " << std::endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempBlock = theStack.top();
@@ -456,7 +447,6 @@ void popcFunc()  //isai
 
 void popiFunc()
 {
-  cout << "POPI " << endl;
   if(!theStack.empty()) {
     tempAddress = chartodir(&youAreHere[evindex]);
     evindex = evindex + 2;
@@ -811,7 +801,6 @@ void copyrightCheck()
 
 void prtafFunc() //marin
 {
-  cout << "PRTAF" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
   evindex += 2;
@@ -820,7 +809,6 @@ void prtafFunc() //marin
 
 void pushafFunc() //marin
 {
-  cout << "PUSHAF" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
   evindex += 2;
@@ -831,7 +819,6 @@ void pushafFunc() //marin
 
 void popafFunc() //marin
 {
-  cout << "POPAF" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
   evindex += 2;
@@ -848,7 +835,6 @@ void popafFunc() //marin
 
 void rdafFunc() //marin
 {
-  cout << "RDAF" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
   evindex += 2;
@@ -859,7 +845,6 @@ void rdafFunc() //marin
 } //void rdafFunc()
 
 void prtadFunc() { //alex
-  cout << "prtadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -869,7 +854,6 @@ void prtadFunc() { //alex
 } //void prtadFunc()
 
 void pushadFunc() { //alex
-  cout << "pushadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -880,7 +864,6 @@ void pushadFunc() { //alex
 } //void pushadFunc()
 
 void rdadFunc() { //alex
-  cout << "rdadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   tempInteger = 8*arrindex;
@@ -892,7 +875,6 @@ void rdadFunc() { //alex
 } //void rdadFunc()
 
 void popadFunc() { //alex
-  cout << "popadFunc" << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
   evindex += 2;
@@ -958,7 +940,6 @@ void prtaiFunc()//jl
 {
   tempAddress = chartodir(&youAreHere[evindex]);
   tempAddress += (arrindex * 4);
-  cout << "AHI TE VA EL TEMPADDRESS " << tempAddress;
   evindex += 2;
   cout << chartoint(&memoryMapper[tempAddress]);
 }
