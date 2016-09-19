@@ -81,7 +81,7 @@ int main() {
         break;
         case PRTS: prtsFunc();
         break;
-        case PRTAC:
+        case PRTAC: prtacFunc();
         break;
         case PRTAI:
         break;
@@ -101,7 +101,7 @@ int main() {
         break;
         case PUSHS: pushsFunc();
           break;
-        case PUSHAC:
+        case PUSHAC: pushacFunc();
         break;
         case PUSHAI: pushaiFunc();
         break;
@@ -133,7 +133,7 @@ int main() {
         break;
         case POPX: if(!popxFunc()) return 1;
         break;
-        case POPAC:
+        case POPAC: popacFunc();
         break;
         case POPAI: popaiFunc();
         break;
@@ -153,7 +153,7 @@ int main() {
         break;
         case RDS: rdsFunc();
         break;
-        case RDAC:
+        case RDAC: if(!rdacFunc()) return 1;
         break;
         case RDAI:
         break;
@@ -863,9 +863,6 @@ void prtadFunc() { //alex
   tempInteger = 8*arrindex;
   tempAddress += tempInteger;
   cout << tempAddress << endl;
-  //printf("%x", memoryMapper[tempAddress]);
-  //printf("%x", memoryMapper[tempAddress+1]);
-  //printf("%x", memoryMapper[tempAddress+2]);
   cout << chartodouble(&memoryMapper[tempAddress]);
 } //void prtadFunc()
 
@@ -907,3 +904,50 @@ void popadFunc() { //alex
       memoryMapper[tempAddress++] = tempPointer[ind];
   }
 } //void popadFunc()
+
+void prtacFunc() //luis
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  cout << memoryMapper[tempAddress+(arrindex)];
+} //void prtacFunc()
+
+void popacFunc() //luis
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock = theStack.top();
+  if(tempBlock.typecode = 's')
+  {
+    theStack.pop();
+    tempPointer = new char[1];
+    cout << "char " << tempBlock.data.s[0] << endl;
+    tempPointer[0] = tempBlock.data.s[0];
+    memoryMapper[tempAddress+(arrindex)] = tempPointer[0];
+  }
+} //void popacFunc()
+
+void pushacFunc()  //luis
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempBlock.typecode = 's';
+  tempBlock.data.s = new char[1];
+  tempBlock.data.s[0] = memoryMapper[tempAddress+(arrindex)];
+  theStack.push(tempBlock);
+}  //void pushcFunc()
+
+bool rdacFunc() //luis
+{
+  cout << "RDAC " << endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  getline(cin,tempString);
+  if(tempString.length() > 1)
+  {
+    std::cout << "Char Overflow! \n";
+    return false;
+  }
+  memoryMapper[tempAddress+(arrindex)] = tempString[0];
+  return true;
+}
