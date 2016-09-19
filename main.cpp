@@ -855,3 +855,42 @@ void rdafFunc() //marin
   for(int someIndex = 0; someIndex < 4; someIndex++)
     memoryMapper[tempAddress++] = tempPointer[someIndex];
 } //void rdafFunc()
+
+void prtadFunc() { //alex
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempInteger = 8*arrindex;
+  tempAddress += tempInteger;
+  cout << chartodouble(&memoryMapper[tempAddress]);
+} //void prtadFunc()
+
+void pushadFunc() { //alex
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempInteger = 8*arrindex;
+  tempAddress += tempInteger;
+  tempBlock.typecode = 'd';
+  tempBlock.data.d = chartodouble(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+} //void pushadFunc()
+
+void rdadFunc() { //alex
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempInteger = 8*arrindex;
+  tempAddress += tempInteger;
+  cin >> tempDouble;
+  tempPointer = doubletochar(tempDouble);
+  for(someIndex = 0; someIndex < 8; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+} //void rdadFunc()
+
+void popadFunc() { //alex
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex += 2;
+  tempInteger = 8*arrindex;
+  tempAddress += tempInteger;
+  tempPointer = doubletochar(tempBlock.data.d);
+  for(someIndex = 0; someIndex < 8; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+} //void popadFunc()

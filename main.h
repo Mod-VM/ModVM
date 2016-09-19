@@ -53,5 +53,9 @@ void prtafFunc();
 void rdafFunc();
 void popafFunc();
 void pushafFunc();
+void prtadFunc();
+void pushadFunc();
+void rdadFunc();
+void popadFunc();
 
 #endif
