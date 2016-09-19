@@ -5,56 +5,8 @@
 #include <string>
 #include <stack>
 #include <cstdlib>
+#include "main.h"
 #include "conversion.h"
-
-//function declaration
-void fileOpen();
-void copyrightCheck();
-void prtiFunc();
-void prtsFunc();
-void popsFunc();
-void cmpFunc();
-bool modFunc();
-bool divFunc();
-bool mulFunc();
-bool subFunc();
-bool addFunc();
-void decFunc();
-void incFunc();
-void jmpFunc();
-void jmpeqFunc();
-void jmpneFunc();
-void jmpgeFunc();
-void jmpgtFunc();
-void jmpltFunc();
-void jmpleFunc();
-void rdsFunc();
-void rdiFunc();
-void popiFunc();
-void pushksFunc();
-void pushkiFunc();
-void pushsFunc();
-void pushiFunc();
-void pushkfFunc();
-void popfFunc();
-void prtfFunc();
-void pushkcFunc();
-void popcFunc();
-void prtcFunc();
-void pushkdFunc();
-void popdFunc();
-void prtdFunc();
-void pushcFunc();
-void pushfFunc();
-void pushdFunc();
-bool rdcFunc();
-void rdfFunc();
-void rddFunc();
-bool popxFunc();
-void stkxFunc();
-void stxFunc();
-void pushaiFunc();
-void popaiFunc();
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
 enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
@@ -249,8 +201,7 @@ int main() {
         case HALT: system("pause");
           return 0;
         break;
-        default:
-          cout << "ERROR: Unrecognized Command.";
+        default: cout << "ERROR: Unrecognized Command.";
         break;
       }
     }
