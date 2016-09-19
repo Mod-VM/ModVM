@@ -49,5 +49,9 @@ void stkxFunc();
 void stxFunc();
 void pushaiFunc();
 void popaiFunc();
+void prtafFunc();
+void rdafFunc();
+void popafFunc();
+void pushafFunc();
 
 #endif

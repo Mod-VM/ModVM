@@ -85,7 +85,7 @@ int main() {
         break;
         case PRTAI:
         break;
-        case PRTAF:
+        case PRTAF: prtafFunc();
         break;
         case PRTAD:
         break;
@@ -105,7 +105,7 @@ int main() {
         break;
         case PUSHAI: pushaiFunc();
         break;
-        case PUSHAF:
+        case PUSHAF: pushafFunc();
         break;
         case PUSHAD:
         break;
@@ -137,7 +137,7 @@ int main() {
         break;
         case POPAI: popaiFunc();
         break;
-        case POPAF:
+        case POPAF: popafFunc();
         break;
         case POPAD:
         break;
@@ -157,7 +157,7 @@ int main() {
         break;
         case RDAI:
         break;
-        case RDAF:
+        case RDAF: rdafFunc();
         break;
         case RDAD:
         break;
@@ -328,7 +328,7 @@ void pushkdFunc()  //isai
   tempBlock.data.d = chartodouble(&youAreHere[evindex]);
   evindex += 8;
   tempBlock.typecode = 'd';
-  theStack.push(tempBlock); 
+  theStack.push(tempBlock);
 }  //void pushkdFunc()
 
 void popdFunc()  //isai
@@ -395,7 +395,7 @@ void pushkcFunc()  //isai
   tempBlock.data.s = new char[1];
   tempBlock.data.s[0] = youAreHere[evindex];
   evindex++;
-  theStack.push(tempBlock); 
+  theStack.push(tempBlock);
 }  //void pushkcFunc()
 
 void pushkiFunc()  //marin
@@ -569,11 +569,11 @@ bool addFunc()
 {
   if(theStack.size() < 2)
     return false;
-  else 
+  else
   {
     tempBlock = theStack.top();
     theStack.pop();
-    switch(tempBlock.typecode) 
+    switch(tempBlock.typecode)
     {
       case 'i':
         if(theStack.top().typecode == 'i')
@@ -621,7 +621,7 @@ bool subFunc()
     theStack.pop();
     theStack.push(tempBlock);
   }
-  return true; 
+  return true;
 }  //void subFunc()
 
 bool mulFunc()
@@ -806,3 +806,52 @@ void copyrightCheck()
 
   evindex=14;
 }
+
+void prtafFunc() //marin
+{
+  cout << "PRTAF" << endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  evindex += 2;
+  cout << chartofloat(&memoryMapper[tempAddress]) << endl;
+} // void prtafFunc()
+
+void pushafFunc() //marin
+{
+  cout << "PUSHAF" << endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  evindex += 2;
+  tempBlock.typecode = 'f';
+  tempBlock.data.f = chartofloat(&memoryMapper[tempAddress]);
+  theStack.push(tempBlock);
+} //void pushafFunc()
+
+void popafFunc() //marin
+{
+  cout << "POPAF" << endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  evindex += 2;
+  tempBlock = theStack.top();
+  if(theStack.top().typecode == 'f')
+  {
+    tempFloat = tempBlock.data.f;
+    tempPointer = floattochar(tempFloat);
+    theStack.pop();
+    for(int ind = 0; ind < 4; ind++)
+      memoryMapper[tempAddress++] = tempPointer[ind];
+  }
+} //void popafFunc()
+
+void rdafFunc() //marin
+{
+  cout << "RDAF" << endl;
+  tempAddress = chartodir(&youAreHere[evindex]);
+  tempAddress += (arrindex * 4);
+  evindex += 2;
+  cin >> tempFloat;
+  tempPointer = floattochar(tempFloat);
+  for(int someIndex = 0; someIndex < 4; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+} //void rdafFunc()
