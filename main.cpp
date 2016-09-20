@@ -89,7 +89,7 @@ int main() {
         break;
         case PRTAD: prtadFunc();
         break;
-        case PRTAS:
+        case PRTAS: prtasFunc();
         break;
         case PUSHC: pushcFunc();
         break;
@@ -109,7 +109,7 @@ int main() {
         break;
         case PUSHAD: pushadFunc();
         break;
-        case PUSHAS:
+        case PUSHAS: pushasFunc();
         break;
         case PUSHKC: pushkcFunc();
         break;
@@ -141,7 +141,7 @@ int main() {
         break;
         case POPAD: popadFunc();
         break;
-        case POPAS:
+        case POPAS: popasFunc();
         break;
         case RDC: if(!rdcFunc()) return 1;
         break;
@@ -161,8 +161,7 @@ int main() {
         break;
         case RDAD: rdadFunc();
         break;
-        case RDAS:
-          //is did
+        case RDAS: rdasFunc();
         break;
         case JMP: jmpFunc();
         break;
@@ -207,6 +206,55 @@ int main() {
     }
     return 1;
 }  //int main()
+
+void pushasFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
+  evindex += 2; 
+  int length = strlen(&memoryMapper[tempAddress]);
+  tempPointer = (char *) malloc(length + 1);
+  strcpy(tempPointer, &memoryMapper[tempAddress]);
+  tempBlock.typecode = 's';
+  tempBlock.data.s = tempPointer;
+  tempBlock.data.s[length] = '\0'; 
+  theStack.push(tempBlock);
+}  //void pushasFunc()
+
+void popasFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
+  evindex += 2;
+  tempBlock = theStack.top();
+  theStack.pop();
+  tempPointer = (char*)tempBlock.data.s; 
+  if(tempBlock.typecode == 's')
+  {
+    int ind;
+    for(ind = 0; tempPointer[ind] != '\0'; ind++) 
+      memoryMapper[tempAddress + ind] = tempPointer[ind];  
+    memoryMapper[tempAddress + ind] = '\0'; 
+  }
+}  //void popasFunc()
+
+void prtasFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
+  evindex += 2; 
+  for (int i = 0; memoryMapper[tempAddress + i] != '\0'; ++i)
+    std::cout << memoryMapper[tempAddress + i]; 
+}  //void prtasFunc()
+
+void rdasFunc() //isai
+{
+  tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
+  evindex += 2;
+  std::cin >> tempString; 
+  tempPointer = (char*) malloc(tempString.length()+1);
+  strcpy(tempPointer, tempString.c_str()); 
+  for(int ind = 0; ind < tempString.length(); ind++)
+    memoryMapper[tempAddress++] = tempPointer[ind];
+  memoryMapper[tempAddress] = '\0';
+}  //void rdasFunc()
 
 void popaiFunc()  //isai
 {
@@ -792,8 +840,8 @@ void copyrightCheck()
   }
 
   cout << "copyright successfuly validated!\n";
-  codeSegment = chartodir(&youAreHere[10]);
-  dataSegment = chartodir(&youAreHere[12]);
+  codeSegment = chartodir(&youAreHere[12]);
+  dataSegment = chartodir(&youAreHere[10]);
   memoryMapper = new char[dataSegment];
 
   evindex=14;
