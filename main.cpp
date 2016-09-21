@@ -210,13 +210,13 @@ int main() {
 void pushasFunc() //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
-  evindex += 2; 
+  evindex += 2;
   int length = strlen(&memoryMapper[tempAddress]);
   tempPointer = (char *) malloc(length + 1);
   strcpy(tempPointer, &memoryMapper[tempAddress]);
   tempBlock.typecode = 's';
   tempBlock.data.s = tempPointer;
-  tempBlock.data.s[length] = '\0'; 
+  tempBlock.data.s[length] = '\0';
   theStack.push(tempBlock);
 }  //void pushasFunc()
 
@@ -226,31 +226,31 @@ void popasFunc() //isai
   evindex += 2;
   tempBlock = theStack.top();
   theStack.pop();
-  tempPointer = (char*)tempBlock.data.s; 
+  tempPointer = (char*)tempBlock.data.s;
   if(tempBlock.typecode == 's')
   {
     int ind;
-    for(ind = 0; tempPointer[ind] != '\0'; ind++) 
-      memoryMapper[tempAddress + ind] = tempPointer[ind];  
-    memoryMapper[tempAddress + ind] = '\0'; 
+    for(ind = 0; tempPointer[ind] != '\0'; ind++)
+      memoryMapper[tempAddress + ind] = tempPointer[ind];
+    memoryMapper[tempAddress + ind] = '\0';
   }
 }  //void popasFunc()
 
 void prtasFunc() //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
-  evindex += 2; 
+  evindex += 2;
   for (int i = 0; memoryMapper[tempAddress + i] != '\0'; ++i)
-    std::cout << memoryMapper[tempAddress + i]; 
+    std::cout << memoryMapper[tempAddress + i];
 }  //void prtasFunc()
 
 void rdasFunc() //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
   evindex += 2;
-  std::cin >> tempString; 
+  std::cin >> tempString;
   tempPointer = (char*) malloc(tempString.length()+1);
-  strcpy(tempPointer, tempString.c_str()); 
+  strcpy(tempPointer, tempString.c_str());
   for(int ind = 0; ind < tempString.length(); ind++)
     memoryMapper[tempAddress++] = tempPointer[ind];
   memoryMapper[tempAddress] = '\0';
@@ -531,14 +531,13 @@ void rdsFunc()
 
 void jmpFunc()
 {
-  evindex = chartodir(&youAreHere[evindex]);
-  evindex+=2;
+  evindex = chartodir(&youAreHere[evindex]) + 14;
 }  //void jmp
 
 void jmpeqFunc()
 {
   if(cmpeval == 0)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jmpeqFunc()
@@ -546,7 +545,7 @@ void jmpeqFunc()
 void jmpneFunc()
 {
   if(cmpeval != 0)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jumpneFunc()
@@ -554,7 +553,7 @@ void jmpneFunc()
 void jmpgtFunc()
 {
   if(cmpeval > 0)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jmpgtFunc()
@@ -562,7 +561,7 @@ void jmpgtFunc()
 void jmpgeFunc()
 {
   if(cmpeval > -1)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jmpgeFunc()
@@ -570,7 +569,7 @@ void jmpgeFunc()
 void jmpltFunc()
 {
   if(cmpeval < 0)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jmpltFunc()
@@ -578,7 +577,7 @@ void jmpltFunc()
 void jmpleFunc()
 {
   if(cmpeval < 1)
-    evindex = chartodir(&youAreHere[evindex]);
+    evindex = chartodir(&youAreHere[evindex]) + 14;
   else
     evindex+=2;
 }  //void jmpleFunc()
@@ -763,6 +762,7 @@ void cmpFunc()
         else if(theStack.top().data.d < tempBlock.data.d)
           cmpeval--;
   }
+  theStack.pop();
 }  //cmpFunc()
 
 void popsFunc()
