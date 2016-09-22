@@ -2,7 +2,7 @@
 #define MAIN_H
 
 //function declaration
-void fileOpen();
+void fileOpen(char *fileName);
 void copyrightCheck();
 void prtiFunc();
 void prtsFunc();

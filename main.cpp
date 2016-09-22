@@ -51,9 +51,12 @@ double tempDouble;
 
 int cmpeval, arrindex;
 
-int main() {
+int main(int argc, char *argv[]) {
 
-  fileOpen();
+  if(argc > 1)
+    fileOpen(argv[1]);
+  else
+    fileOpen((char*)"CK.chop");
 
   copyrightCheck();
 
@@ -811,9 +814,9 @@ void prtfFunc()  //isai
   cout << chartofloat(&memoryMapper[tempAddress]);
 }  //void prtfFunc()
 
-void fileOpen()
+void fileOpen(char *fileName)
 {
-  inFile.open("CK.chop",ios::in|ios::binary|ios::ate);
+  inFile.open(fileName,ios::in|ios::binary|ios::ate);
 
   inFile.seekg(0, ios::end);
   size = inFile.tellg();
