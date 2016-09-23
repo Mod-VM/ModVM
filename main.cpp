@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
       StackBlock reset = {};
       tempBlock = reset;
       //reading example, plz test
-      printf("\nNEXT BYTE hex: %x, dec: %d\n", youAreHere[evindex], youAreHere[evindex]);
+      //printf("\nNEXT BYTE hex: %x, dec: %d\n", youAreHere[evindex], youAreHere[evindex]);
       //cout << oData[i] << " + 'a' = " << (oData[i] + 'a');
       //cout << ('a') << endl;
       //cout << "\n\n";
@@ -526,7 +526,7 @@ void rdsFunc()
 {
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex+=2;
-  getline(cin,tempString);
+  cin >> tempString;
   for(someIndex = 0; someIndex<tempString.length(); someIndex++)
     memoryMapper[tempAddress++] = tempString[someIndex];
   memoryMapper[tempAddress] = '\0';
@@ -977,7 +977,7 @@ bool rdacFunc() //luis
   cout << "RDAC " << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
-  getline(cin,tempString);
+  cin >> tempString;
   if(tempString.length() > 1)
   {
     std::cout << "Char Overflow! \n";
