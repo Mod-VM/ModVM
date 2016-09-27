@@ -604,7 +604,7 @@ void decFunc()
       memoryMapper[tempAddress++] = tempPointer[someIndex];
 }  //void decFunc()
 
-bool addFunc()
+bool addFunc()//JL
 {
   if(theStack.size() < 2)
     return false;
@@ -620,67 +620,67 @@ bool addFunc()
       case 'i':
         if(theStack.top().typecode == 'i')
         {
-            theStack.top().data.i += tempBlock.data.i;
-            break;
+          theStack.top().data.i += tempBlock.data.i;
+          break;
         }
         if(theStack.top().typecode == 'f')
         {
-            changeType = theStack.top();
-            theStack.pop();
-            newFloatValue = changeType.data.f + tempBlock.data.i;
-            tempBlock.typecode = 'f';
-            tempBlock.data.f = newFloatValue;
-            theStack.push(tempBlock);
-            break;
+          changeType = theStack.top();
+          theStack.pop();
+          newFloatValue = changeType.data.f + tempBlock.data.i;
+          tempBlock.typecode = 'f';
+          tempBlock.data.f = newFloatValue;
+          theStack.push(tempBlock);
+          break;
         }
         if(theStack.top().typecode == 'd')
         {
-            changeType = theStack.top();
-            theStack.pop();
-            newDoubleValue = changeType.data.d + tempBlock.data.i;
-            tempBlock.typecode = 'd';
-            tempBlock.data.d = newDoubleValue;
-            theStack.push(tempBlock);
-            break;
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d + tempBlock.data.i;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
         }
         break;
       case 'f':
         if(theStack.top().typecode == 'f')
         {
-            theStack.top().data.f += tempBlock.data.f;
-            break;
+          theStack.top().data.f += tempBlock.data.f;
+          break;
         }
         if(theStack.top().typecode == 'i')
         {
-            theStack.top().data.f += tempBlock.data.i;
-            break;
+          theStack.top().data.f += tempBlock.data.i;
+          break;
         }
         if(theStack.top().typecode == 'd')
         {
-            changeType = theStack.top();
-            theStack.pop();
-            newDoubleValue = changeType.data.d + tempBlock.data.d;
-            tempBlock.typecode = 'd';
-            tempBlock.data.d = newDoubleValue;
-            theStack.push(tempBlock);
-            break;
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d + tempBlock.data.d;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
         }
       break;
       case 'd':
         if (theStack.top().typecode == 'd')
         {
-            theStack.top().data.d += tempBlock.data.d;
-            break;
+          theStack.top().data.d += tempBlock.data.d;
+          break;
         }
         if(theStack.top().typecode == 'i')
         {
-            theStack.top().data.d += tempBlock.data.i;
-            break;
+          theStack.top().data.d += tempBlock.data.i;
+          break;
         }
         if(theStack.top().typecode == 'f')
         {
-            theStack.top().data.d += tempBlock.data.f;
-            break;
+          theStack.top().data.d += tempBlock.data.f;
+          break;
         }
         break;
     }
@@ -688,80 +688,83 @@ bool addFunc()
   return true;
 }  //bool addFunc()
 
-bool subFunc()
+bool subFunc() //JL
 {
   if(theStack.size() < 2)
     return false;
   else {
     tempBlock = theStack.top();
     theStack.pop();
+    StackBlock changeType = {};
+    double newDoubleValue;
+    float newFloatValue;
     switch(tempBlock.typecode) {
-        case 'i':
-          if(theStack.top().typecode == 'i')
-          {
-              theStack.top().data.i -= tempBlock.data.i;
-              break;
-          }
-          if(theStack.top().typecode == 'f')
-          {
-              changeType = theStack.top();
-              theStack.pop();
-              newFloatValue = changeType.data.f - tempBlock.data.i;
-              tempBlock.typecode = 'f';
-              tempBlock.data.f = newFloatValue;
-              theStack.push(tempBlock);
-              break;
-          }
-          if(theStack.top().typecode == 'd')
-          {
-              changeType = theStack.top();
-              theStack.pop();
-              newDoubleValue = changeType.data.d - tempBlock.data.i;
-              tempBlock.typecode = 'd';
-              tempBlock.data.d = newDoubleValue;
-              theStack.push(tempBlock);
-              break;
-          }
+      case 'i':
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.i -= tempBlock.data.i;
           break;
-        case 'f':
-          if(theStack.top().typecode == 'f')
-          {
-              theStack.top().data.f -= tempBlock.data.f;
-              break;
-          }
-          if(theStack.top().typecode == 'i')
-          {
-              theStack.top().data.f -= tempBlock.data.i;
-              break;
-          }
-          if(theStack.top().typecode == 'd')
-          {
-              changeType = theStack.top();
-              theStack.pop();
-              newDoubleValue = changeType.data.d - tempBlock.data.d;
-              tempBlock.typecode = 'd';
-              tempBlock.data.d = newDoubleValue;
-              theStack.push(tempBlock);
-              break;
-          }
+        }
+        if(theStack.top().typecode == 'f')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newFloatValue = changeType.data.f - tempBlock.data.i;
+          tempBlock.typecode = 'f';
+          tempBlock.data.f = newFloatValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d - tempBlock.data.i;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
         break;
-        case 'd':
-          if (theStack.top().typecode == 'd')
-          {
-              theStack.top().data.d -= tempBlock.data.d;
-              break;
-          }
-          if(theStack.top().typecode == 'i')
-          {
-              theStack.top().data.d -= tempBlock.data.i;
-              break;
-          }
-          if(theStack.top().typecode == 'f')
-          {
-              theStack.top().data.d -= tempBlock.data.f;
-              break;
-          }
+      case 'f':
+        if(theStack.top().typecode == 'f')
+        {
+          theStack.top().data.f -= tempBlock.data.f;
           break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.f -= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d - tempBlock.data.d;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        break;
+      case 'd':
+        if (theStack.top().typecode == 'd')
+        {
+          theStack.top().data.d -= tempBlock.data.d;
+          break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.d -= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'f')
+        {
+          theStack.top().data.d -= tempBlock.data.f;
+          break;
+        }
+        break;
     }
     theStack.pop();
     theStack.push(tempBlock);
@@ -774,26 +777,85 @@ bool mulFunc()
   if(theStack.size() >= 2) {
     tempBlock = theStack.top();
     theStack.pop();
+    StackBlock changeType = {};
+    double newDoubleValue;
+    float newFloatValue;
     switch(tempBlock.typecode)
     {
       case 'i':
-        if (theStack.top().typecode == 'i') {
-          tempBlock.data.i *= theStack.top().data.i;
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.i *= tempBlock.data.i;
+          break;
         }
-      break;
+        if(theStack.top().typecode == 'f')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newFloatValue = changeType.data.f * tempBlock.data.i;
+          tempBlock.typecode = 'f';
+          tempBlock.data.f = newFloatValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d * tempBlock.data.i;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        break;
       case 'f':
         if(theStack.top().typecode == 'f')
-          tempBlock.data.f *= theStack.top().data.f;
-      break;
+        {
+          theStack.top().data.f *= tempBlock.data.f;
+          break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.f *= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d * tempBlock.data.d;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        break;
       case 'd':
-        if(theStack.top().typecode =='d')
-          tempBlock.data.d *= theStack.top().data.d;
+        if (theStack.top().typecode == 'd')
+        {
+          theStack.top().data.d *= tempBlock.data.d;
+          break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.d *= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'f')
+        {
+          theStack.top().data.d *= tempBlock.data.f;
+          break;
+        }
+        break;
     }
     theStack.pop();
     theStack.push(tempBlock);
     return true;
   }
-  return false;
+  else{
+    return false;
+  }
 }  //mulFunc()
 
 bool divFunc()
@@ -801,20 +863,79 @@ bool divFunc()
   if(theStack.size() >= 2) {
     tempBlock = theStack.top();
     theStack.pop();
+    StackBlock changeType = {};
+    double newDoubleValue;
+    float newFloatValue;
     switch(theStack.top().typecode)
     {
       case 'i':
-        if (theStack.top().typecode == 'i')
-          tempBlock.data.i = theStack.top().data.i / tempBlock.data.i;
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.i /= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'f')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newFloatValue = changeType.data.f / tempBlock.data.i;
+          tempBlock.typecode = 'f';
+          tempBlock.data.f = newFloatValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d / tempBlock.data.i;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        break;
       break;
       case 'f':
         if(theStack.top().typecode == 'f')
-          tempBlock.data.f = theStack.top().data.f / tempBlock.data.f;
+        {
+          theStack.top().data.f /= tempBlock.data.f;
+          break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.f /= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'd')
+        {
+          changeType = theStack.top();
+          theStack.pop();
+          newDoubleValue = changeType.data.d / tempBlock.data.d;
+          tempBlock.typecode = 'd';
+          tempBlock.data.d = newDoubleValue;
+          theStack.push(tempBlock);
+          break;
+        }
+        break;
       break;
       case 'd':
-        if(theStack.top().typecode == 'd')
-          tempBlock.data.d = theStack.top().data.d / tempBlock.data.d;
-      break;
+        if (theStack.top().typecode == 'd')
+        {
+          theStack.top().data.d /= tempBlock.data.d;
+          break;
+        }
+        if(theStack.top().typecode == 'i')
+        {
+          theStack.top().data.d /= tempBlock.data.i;
+          break;
+        }
+        if(theStack.top().typecode == 'f')
+        {
+          theStack.top().data.d /= tempBlock.data.f;
+          break;
+        }
+        break;
     }
     theStack.pop();
     theStack.push(tempBlock);
