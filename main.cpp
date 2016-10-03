@@ -695,7 +695,7 @@ bool addFunc()//JL
           changeType = theStack.top();
           theStack.pop();
           newDoubleValue = changeType.data.f + tempBlock.data.d;
-          tempBlock.typecode = d;
+          tempBlock.typecode = 'd';
           tempBlock.data.d = newDoubleValue;
           theStack.push(tempBlock);
           break;
@@ -710,13 +710,15 @@ bool subFunc() //JL
 {
   if(theStack.size() < 2)
     return false;
-  else {
+  else
+  {
     tempBlock = theStack.top();
     theStack.pop();
     StackBlock changeType = {};
     double newDoubleValue;
     float newFloatValue;
-    switch(tempBlock.typecode) {
+    switch(tempBlock.typecode)
+    {
       case 'i':
         if(theStack.top().typecode == 'i')
         {
@@ -792,22 +794,21 @@ bool subFunc() //JL
           changeType = theStack.top();
           theStack.pop();
           newDoubleValue = changeType.data.f - tempBlock.data.d;
-          tempBlock.typecode = d;
+          tempBlock.typecode = 'd';
           tempBlock.data.d = newDoubleValue;
           theStack.push(tempBlock);
           break;
         }
         break;
     }
-    theStack.pop();
-    theStack.push(tempBlock);
   }
   return true;
 }  //void subFunc()
 
 bool mulFunc()
 {
-  if(theStack.size() >= 2) {
+  if(theStack.size() >= 2)
+  {
     tempBlock = theStack.top();
     theStack.pop();
     StackBlock changeType = {};
@@ -890,15 +891,13 @@ bool mulFunc()
           changeType = theStack.top();
           theStack.pop();
           newDoubleValue = changeType.data.f * tempBlock.data.d;
-          tempBlock.typecode = d;
+          tempBlock.typecode = 'd';
           tempBlock.data.d = newDoubleValue;
           theStack.push(tempBlock);
           break;
         }
         break;
     }
-    theStack.pop();
-    theStack.push(tempBlock);
     return true;
   }
   else{
@@ -991,15 +990,13 @@ bool divFunc()
             changeType = theStack.top();
             theStack.pop();
             newDoubleValue = changeType.data.f / tempBlock.data.d;
-            tempBlock.typecode = d;
+            tempBlock.typecode = 'd';
             tempBlock.data.d = newDoubleValue;
             theStack.push(tempBlock);
             break;
           }
           break;
     }
-    theStack.pop();
-    theStack.push(tempBlock);
     return true;
   }
   return false;
