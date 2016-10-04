@@ -272,7 +272,6 @@ void popaiFunc()  //isai
     theStack.pop();
     for(int ind = 0; ind < 4; ind++)
       memoryMapper[tempAddress++] = tempPointer[ind];
-    std::cout << chartoint(&memoryMapper[(tempAddress-4)]) << std::endl;
   }
 }  //void popaiFunc()
 
@@ -291,7 +290,6 @@ void stxFunc() //isai
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   arrindex = chartoint(&memoryMapper[tempAddress]);
-  std::cout << "this is the index: " << arrindex << std::endl;
 }  //void stxFunc()
 
 void stkxFunc() //isai
@@ -458,6 +456,7 @@ void pushksFunc()
   tempInteger = youAreHere[evindex++];
   tempPointer = (char*)malloc(tempInteger+1);
   strncpy(tempPointer,&youAreHere[evindex],tempInteger);
+  tempPointer[tempInteger] = '\0';
   evindex += tempInteger;
   tempBlock.typecode = 's';
   tempBlock.data.s = tempPointer;
