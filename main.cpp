@@ -912,7 +912,7 @@ bool divFunc()
     StackBlock changeType = {};
     double newDoubleValue;
     float newFloatValue;
-    switch(theStack.top().typecode)
+    switch(tempBlock.typecode)
     {
       case 'i':
         if(theStack.top().typecode == 'i')
