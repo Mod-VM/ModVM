@@ -200,7 +200,7 @@ int main(int argc, char *argv[]) {
         break;
         case CMP: cmpFunc();
         break;
-        case HALT: system("pause");
+        case HALT: getchar();
           return 0;
         break;
         default: cout << "ERROR: Unrecognized Command.";
