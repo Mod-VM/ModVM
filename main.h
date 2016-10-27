@@ -45,6 +45,8 @@ bool rdcFunc();
 void rdfFunc();
 void rddFunc();
 bool popxFunc();
+bool popyFunc();
+void movyFunc();
 void stkxFunc();
 void stxFunc();
 void pushaiFunc();
