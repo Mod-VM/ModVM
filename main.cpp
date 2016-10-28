@@ -9,7 +9,7 @@
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
-enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP};
+enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP, PRTM, MOVY, POPY};
 bool jmpeq, jmpne, jmpge, jmpgt, jmple, jmplt;
 
 using namespace std;
@@ -49,7 +49,7 @@ bool errorFlag = false;
 float tempFloat;
 double tempDouble;
 
-int cmpeval, arrindex;
+int cmpeval, arrindex, arrindex_aux;
 
 int main(int argc, char *argv[]) {
 
@@ -199,6 +199,10 @@ int main(int argc, char *argv[]) {
         case MOD: if(!modFunc()) return 1;
         break;
         case CMP: cmpFunc();
+        break;
+        case MOVY: movyFunc();
+        break;
+        case POPY: if(!popyFunc()) return 1;
         break;
         case HALT: getchar();
           return 0;
@@ -1286,4 +1290,21 @@ void rdaiFunc()//jl
   tempPointer = inttochar(tempInteger);
   for(int someIndex = 0; someIndex < 4; someIndex++)
       memoryMapper[tempAddress++] = tempPointer[someIndex];
+}
+
+void movyFunc()
+{
+  arrindex = arrindex_aux;
+}
+
+bool popyFunc()
+{
+  if(!theStack.empty() && theStack.top().typecode == 'i')
+  {
+    arrindex_aux = theStack.top().data.i;
+    theStack.pop();
+    return true;
+  }
+  std::cout << "array index error!";
+  return false;
 }
