@@ -9,7 +9,10 @@
 #include "conversion.h"
 
 enum TYPES {CHAR, INT, FLOAT, DOUBLE, STRING};
-enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, ADD, SUB, MUL, DIV, MOD, CMP, PRTM, MOVY, POPY};
+enum COMMANDS {HALT, PRTCR, PRTC, PRTI, PRTF, PRTD, PRTS, PRTAC, PRTAI, PRTAF, PRTAD, PRTAS, PUSHC, PUSHI, PUSHF, PUSHD, PUSHS, PUSHAC, PUSHAI, 
+               PUSHAF, PUSHAD, PUSHAS, PUSHKC, PUSHKI, PUSHKF, PUSHKD, PUSHKS, POPC, POPI, POPF, POPD, POPS, POPX, POPAC, POPAI, POPAF, POPAD, 
+               POPAS, RDC, RDI, RDF, RDD, RDS, RDAC, RDAI, RDAF, RDAD, RDAS, JMP, JMPEQ, JMPNE, JMPGT, JMPGE, JMPLT, JMPLE, STX, STKX, INC, DEC, 
+               ADD, SUB, MUL, DIV, MOD, CMP, PRTM, MOVY, POPY};
 bool jmpeq, jmpne, jmpge, jmpgt, jmple, jmplt;
 
 using namespace std;
@@ -206,7 +209,8 @@ int main(int argc, char *argv[]) {
         break;
         case PRTM: prtmFunc();
         break;
-        case HALT: getchar();
+        case HALT: std::cout << "press enter to end the program\n";
+          getchar();
           return 0;
         break;
         default: cout << "ERROR: Unrecognized Command.";
