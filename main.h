@@ -4,6 +4,7 @@
 //function declaration
 void fileOpen(char *fileName);
 void copyrightCheck();
+void prtmFunc();
 void prtiFunc();
 void prtsFunc();
 void popsFunc();

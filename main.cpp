@@ -204,6 +204,8 @@ int main(int argc, char *argv[]) {
         break;
         case POPY: if(!popyFunc()) return 1;
         break;
+        case PRTM: prtmFunc();
+        break;
         case HALT: getchar();
           return 0;
         break;
@@ -213,6 +215,17 @@ int main(int argc, char *argv[]) {
     }
     return 1;
 }  //int main()
+
+void prtmFunc()
+{
+  tempInteger = youAreHere[evindex++];
+  int cont = 0;
+  while(cont < tempInteger)
+  {
+    std::cout << (char)youAreHere[evindex++];
+    cont++;
+  }
+}  //void prtmFunc()
 
 void pushasFunc() //isai
 {
