@@ -1123,13 +1123,12 @@ void fileOpen(char *fileName)
 
   inFile.seekg(0, ios::end);
   size = inFile.tellg();
-  cout << "Size of file: " << size << endl;
+//  cout << "Size of file: " << size << endl;
   inFile.seekg(0, ios::beg);
 
   oData = new char[size+1];
   inFile.read(oData, size);
   oData[size] = '\0';
-  cout << "oData size: " << strlen(oData) <<  endl;
 } // void fileOpen()
 
 void copyrightCheck()
@@ -1145,7 +1144,7 @@ void copyrightCheck()
     someIndex++;
   }
 
-  cout << "copyright successfuly validated!\n";
+  //cout << "copyright successfuly validated!\n";
   codeSegment = chartodir(&youAreHere[12]);
   dataSegment = chartodir(&youAreHere[10]);
   memoryMapper = new char[dataSegment];
