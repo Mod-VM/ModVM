@@ -272,7 +272,7 @@ void rdasFunc() //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]) + arrindex;
   evindex += 2;
-  std::cin >> tempString;
+  getline(cin, tempString);
   tempPointer = (char*) malloc(tempString.length()+1);
   strcpy(tempPointer, tempString.c_str());
   for(int ind = 0; ind < tempString.length(); ind++)
@@ -537,6 +537,7 @@ void rdiFunc()  //marin
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex+=2;
   cin >> tempInteger;
+  getline(cin, tempString);
   tempPointer = inttochar(tempInteger);
   for(someIndex = 0; someIndex < 4; someIndex++)
     memoryMapper[tempAddress++] = tempPointer[someIndex];
@@ -546,7 +547,7 @@ void rdsFunc()
 {
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex+=2;
-  cin >> tempString;
+  getline(cin, tempString);
   for(someIndex = 0; someIndex<tempString.length(); someIndex++)
     memoryMapper[tempAddress++] = tempString[someIndex];
   memoryMapper[tempAddress] = '\0';
@@ -1303,6 +1304,7 @@ void rdaiFunc()//jl
   tempAddress += (arrindex * 4);
   evindex += 2;
   cin >> tempInteger;
+  getline(cin, tempString);
 
   tempPointer = inttochar(tempInteger);
   for(int someIndex = 0; someIndex < 4; someIndex++)
