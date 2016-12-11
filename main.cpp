@@ -1202,7 +1202,6 @@ void prtadFunc() { //alex
   evindex += 2;
   tempInteger = 8*arrindex;
   tempAddress += tempInteger;
-  cout << tempAddress << endl;
   cout << chartodouble(&memoryMapper[tempAddress]);
 } //void prtadFunc()
 
@@ -1229,15 +1228,15 @@ void rdadFunc() { //alex
 
 void popadFunc() { //alex
   tempAddress = chartodir(&youAreHere[evindex]);
-  tempAddress += (arrindex * 4);
+  tempAddress += (arrindex * 8);
   evindex += 2;
   tempBlock = theStack.top();
   if(theStack.top().typecode == 'd')
   {
-    tempFloat = tempBlock.data.d;
-    tempPointer = doubletochar(tempFloat);
+    tempDouble = tempBlock.data.d;
+    tempPointer = doubletochar(tempDouble);
     theStack.pop();
-    for(int ind = 0; ind < 4; ind++)
+    for(int ind = 0; ind < 8; ind++)
       memoryMapper[tempAddress++] = tempPointer[ind];
   }
 } //void popadFunc()
@@ -1258,7 +1257,6 @@ void popacFunc() //luis
   {
     theStack.pop();
     tempPointer = new char[1];
-    cout << "char " << tempBlock.data.s[0] << endl;
     tempPointer[0] = tempBlock.data.s[0];
     memoryMapper[tempAddress+(arrindex)] = tempPointer[0];
   }
@@ -1276,7 +1274,6 @@ void pushacFunc()  //luis
 
 bool rdacFunc() //luis
 {
-  cout << "RDAC " << endl;
   tempAddress = chartodir(&youAreHere[evindex]);
   evindex += 2;
   cin >> tempString;
