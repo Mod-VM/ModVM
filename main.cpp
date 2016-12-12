@@ -351,6 +351,17 @@ void rdfFunc() //isai
     memoryMapper[tempAddress++] = tempPointer[someIndex];
 }  //void rdfFunc()
 
+void rdiFunc()  //marin
+{
+  tempAddress = chartodir(&youAreHere[evindex]);
+  evindex+=2;
+  std::cin >> tempFloat;
+  //getline(cin, tempString);
+  tempPointer = inttochar((int)tempFloat);
+  for(int   someIndex = 0; someIndex < 4; someIndex++)
+    memoryMapper[tempAddress++] = tempPointer[someIndex];
+}  //void rdiFunc()
+
 bool rdcFunc() //isai
 {
   tempAddress = chartodir(&youAreHere[evindex]);
@@ -531,17 +542,6 @@ void popiFunc()
     }
   }
 }  //void popiFunc()
-
-void rdiFunc()  //marin
-{
-  tempAddress = chartodir(&youAreHere[evindex]);
-  evindex+=2;
-  cin >> tempInteger;
-  getline(cin, tempString);
-  tempPointer = inttochar(tempInteger);
-  for(someIndex = 0; someIndex < 4; someIndex++)
-    memoryMapper[tempAddress++] = tempPointer[someIndex];
-}  //void rdiFunc()
 
 void rdsFunc()
 {
@@ -1306,7 +1306,7 @@ void rdaiFunc()//jl
   for(int someIndex = 0; someIndex < 4; someIndex++)
       memoryMapper[tempAddress++] = tempPointer[someIndex];
 }
-
+    
 void movyFunc()
 {
   arrindex = arrindex_aux;
